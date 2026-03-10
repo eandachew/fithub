@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="mb-4">Workout Plans</h1>
+
+    <div class="row">
+
+        {% for workout in workouts %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100">
+
+                {% if workout.image %}
+                <img src="{{ workout.image.url }}" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ workout.title }}</h5>
+
+                    <p class="card-text">
+                        Difficulty: {{ workout.difficulty }}
+                    </p>
+
+                    <p>
+                        Duration: {{ workout.duration_weeks }} weeks
+                    </p>
+
+                    {% if workout.is_premium %}
+                    <span class="badge badge-danger">Premium</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>No workouts available yet.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
