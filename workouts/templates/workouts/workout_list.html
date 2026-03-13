@@ -36,8 +36,10 @@
                     </p>
 
                     {% if workout.is_premium %}
-                    <span class="badge badge-danger">Premium</span>
-                    {% endif %}
+                    <span class="badge badge-danger">Premium 🔒</span>
+                    {% else %}
+                    <span class="badge badge-success">Free</span>
+                    {% endif %}     
 
                 </div>
 
