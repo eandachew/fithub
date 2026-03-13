@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'home',
     'workouts',
+    'payments',
 
 ]
 
@@ -164,3 +165,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Stripe configuration
+STRIPE_PUBLIC_KEY = "your_test_public_key"
+STRIPE_SECRET_KEY = "your_test_secret_key"
