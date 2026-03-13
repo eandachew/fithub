@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="mb-4">{{ workout.title }}</h1>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            {% if workout.image %}
+            <img src="{{ workout.image.url }}" class="img-fluid">
+            {% endif %}
+
+        </div>
+
+        <div class="col-md-6">
+
+            <h4>Difficulty</h4>
+            <p>{{ workout.difficulty }}</p>
+
+            <h4>Duration</h4>
+            <p>{{ workout.duration_weeks }} weeks</p>
+
+            <h4>Description</h4>
+            <p>{{ workout.description }}</p>
+            <h3 class="mt-4">Exercises</h3>
+
+<ul class="list-group">
+
+{% for exercise in workout.exercises.all %}
+
+<li class="list-group-item">
+
+<strong>{{ exercise.name }}</strong><br>
+
+Sets: {{ exercise.sets }} |
+Reps: {{ exercise.reps }} |
+Rest: {{ exercise.rest_seconds }} sec
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item">
+No exercises added yet.
+</li>
+
+{% endfor %}
+
+</ul>
+
+            {% if workout.is_premium %}
+            <div class="alert alert-warning">
+                🔒 This is a premium workout plan.
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

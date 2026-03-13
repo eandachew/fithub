@@ -21,7 +21,11 @@
 
                 <div class="card-body">
 
-                    <h5 class="card-title">{{ workout.title }}</h5>
+                    <h5 class="card-title">
+                        <a href="{% url 'workout_detail' workout.id %}">
+                            {{ workout.title }}
+                        </a>
+                    </h5>
 
                     <p class="card-text">
                         Difficulty: {{ workout.difficulty }}

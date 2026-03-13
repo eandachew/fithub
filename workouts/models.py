@@ -13,3 +13,19 @@ class WorkoutPlan(models.Model):
 
     def __str__(self):
         return self.title
+
+class Exercise(models.Model):
+
+    workout = models.ForeignKey(
+        WorkoutPlan,
+        on_delete=models.CASCADE,
+        related_name='exercises'
+    )
+
+    name = models.CharField(max_length=200)
+    sets = models.IntegerField()
+    reps = models.CharField(max_length=50)
+    rest_seconds = models.IntegerField()
+
+    def __str__(self):
+        return self.name
