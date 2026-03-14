@@ -167,5 +167,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Stripe configuration
-STRIPE_PUBLIC_KEY = "your_test_public_key"
-STRIPE_SECRET_KEY = "your_test_secret_key"
+STRIPE_PUBLIC_KEY = "pk_test_51TAVwwPehmHyMiXHTMVaYYeiOI091ENttxTB6J1kEMSTLhpeFhBX6ctwN9lleNRqtxENz0KMMRcWIDxdJXEnigyK007TJ3LV6C"
+STRIPE_SECRET_KEY = "sk_test_51TAVwwPehmHyMiXHZst0rjj2IRydTXotuGWyXHcUfDgk4CcRYCB2nZZQB8IFDK4WYvAoz5q3F3qOCrtgd4PvTRGV007XJlo6El"

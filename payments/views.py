@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 import stripe
 from django.urls import reverse
+from .models import UserProfile
 
 # Create your views here.
 
@@ -34,4 +35,9 @@ def checkout(request):
 
 
 def payment_success(request):
+    
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user=request.user)
+        profile.is_premium = True
+        profile.save()
     return render(request, "payments/success.html")

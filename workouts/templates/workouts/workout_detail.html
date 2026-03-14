@@ -52,12 +52,12 @@ No exercises added yet.
 
 </ul>
 
-            {% if workout.is_premium %}
-            <div class="alert alert-warning">
+                {% if workout.is_premium and not request.user.userprofile.is_premium %}
+                <div class="alert alert-warning">
                 🔒 Premium Workout Plan  
                 Subscribe to unlock full access.
                 </div>
-            {% endif %}
+                {% endif %}
 
         </div>
 
