@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 import stripe
 from django.urls import reverse
-from .models import UserProfile
+from shop.models import Order, OrderItem, Product
 
 # Create your views here.
 
@@ -10,34 +10,63 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def checkout(request):
 
-    if request.method == "POST":
+    cart = request.session.get("cart", {})
 
-        session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price_data': {
-                    'currency': 'eur',
-                    'product_data': {
-                        'name': 'FitHub Premium Access',
-                    },
-                    'unit_amount': 1500,
-                },
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url=request.build_absolute_uri(reverse('payment_success')),
-            cancel_url=request.build_absolute_uri(reverse('checkout')),
+    if not cart:
+        return redirect("products")
+
+    total = 0
+
+    for item_id, quantity in cart.items():
+        product = Product.objects.get(id=item_id)
+        total += product.price * quantity
+
+    order = Order.objects.create(
+        user=request.user,
+        total=total
+    )
+
+    for item_id, quantity in cart.items():
+        product = Product.objects.get(id=item_id)
+
+        OrderItem.objects.create(
+            order=order,
+            product=product,
+            quantity=quantity,
+            price=product.price
         )
 
-        return redirect(session.url)
+    request.session["order_id"] = order.id
 
-    return render(request, "payments/checkout.html")
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'eur',
+                'product_data': {
+                    'name': f'FitHub Order {order.id}',
+                },
+                'unit_amount': int(total * 100),
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=request.build_absolute_uri(reverse('payment_success')),
+        cancel_url=request.build_absolute_uri(reverse('view_cart')),
+    )
+
+    return redirect(session.url)
 
 
 def payment_success(request):
-    
-    if request.user.is_authenticated:
-        profile = UserProfile.objects.get(user=request.user)
-        profile.is_premium = True
-        profile.save()
+
+    order_id = request.session.get("order_id")
+
+    if order_id:
+        order = Order.objects.get(id=order_id)
+        order.paid = True
+        order.save()
+
+        request.session["cart"] = {}
+
     return render(request, "payments/success.html")
