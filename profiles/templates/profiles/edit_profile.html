@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+
+<h1>Edit Profile</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="{% url 'profile_home' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+</div>
+{% endblock %}

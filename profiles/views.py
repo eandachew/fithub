@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from shop.models import Order
 from payments.models import UserProfile
+from django.contrib import messages
+from .forms import ProfileUpdateForm
 
 
 # Create your views here.
@@ -20,3 +22,18 @@ def profile_home(request):
         "orders": orders
     }
     return render(request, "profiles/profile_home.html", context)
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated!")
+            return redirect('profile_home')
+    else:
+        form = ProfileUpdateForm(instance=profile)
+
+    return render(request, "profiles/edit_profile.html", {'form': form})
