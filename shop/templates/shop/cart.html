@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<h1>Your Cart</h1>
+
+{% if products %}
+
+<table class="table">
+
+<thead>
+<tr>
+<th>Product</th>
+<th>Price</th>
+<th>Quantity</th>
+<th>Total</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for product in products %}
+
+<tr>
+<td>{{ product.name }}</td>
+<td>€{{ product.price }}</td>
+<td>{{ product.quantity }}</td>
+<td>€{{ product.total_price }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+<h3>Total: €{{ total }}</h3>
+
+<a href="/payments/checkout/" class="btn btn-primary">
+Proceed to Checkout
+</a>
+
+{% else %}
+
+<p>Your cart is empty.</p>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

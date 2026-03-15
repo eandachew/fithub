@@ -14,7 +14,9 @@
 
 <h3>€{{ product.price }}</h3>
 
-<button class="btn btn-success">Buy Now</button>
+<a href="{% url 'add_to_cart' product.id %}" class="btn btn-success">
+    Add to Cart
+    </a>
 
 </div>
 
