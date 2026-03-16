@@ -19,6 +19,7 @@ class UserProfile(models.Model):
         blank=True,
         null=True
     )
+    is_premium = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
