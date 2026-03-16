@@ -3,6 +3,8 @@ from django.conf import settings
 import stripe
 from django.urls import reverse
 from shop.models import Order, OrderItem, Product
+from profiles.models import UserProfile
+
 
 # Create your views here.
 
@@ -67,6 +69,12 @@ def payment_success(request):
         order.paid = True
         order.save()
 
+        # Grant premium access
+        profile = request.user.profile
+        profile.is_premium = True
+        profile.save()
+
+        # Clear cart
         request.session["cart"] = {}
 
     return render(request, "payments/success.html")

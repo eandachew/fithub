@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import WorkoutPlan
-from payments.models import UserProfile
+from profiles.models import UserProfile
 
 # Create your views here.
 

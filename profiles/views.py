@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from shop.models import Order
-from payments.models import UserProfile
+from profiles.models import UserProfile
 from django.contrib import messages
 from .forms import ProfileUpdateForm
 
