@@ -1,60 +1,38 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block content %}
-
-<div class="container">
-
+<div class="container mt-5">
     <h1 class="mb-4">Workout Plans</h1>
 
     <div class="row">
-
         {% for workout in workouts %}
-
-        <div class="col-md-4 mb-4">
-
-            <div class="card h-100">
-
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
                 {% if workout.image %}
-                <img src="{{ workout.image.url }}" class="card-img-top">
+                <img src="{{ workout.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200" class="card-img-top">
                 {% endif %}
 
                 <div class="card-body">
-
-                    <h5 class="card-title">
-                        <a href="{% url 'workout_detail' workout.id %}">
-                            {{ workout.title }}
-                        </a>
-                    </h5>
-
-                    <p class="card-text">
-                        Difficulty: {{ workout.difficulty }}
-                    </p>
-
-                    <p>
-                        Duration: {{ workout.duration_weeks }} weeks
-                    </p>
+                    <h5 class="card-title">{{ workout.title }}</h5>
+                    <p class="card-text">{{ workout.description|truncatechars:100 }}</p>
 
                     {% if workout.is_premium %}
-                    <span class="badge badge-danger">Premium 🔒</span>
+                    <span class="badge badge-warning mb-2">Premium 🔒</span>
                     {% else %}
-                    <span class="badge badge-success">Free</span>
-                    {% endif %}     
+                    <span class="badge badge-success mb-2">Free</span>
+                    {% endif %}
 
+                    <a href="{% url 'workout_detail' workout.id %}" class="btn btn-primary btn-block mt-2">
+                        View Workout
+                    </a>
                 </div>
-
             </div>
-
         </div>
-
         {% empty %}
-
         <p>No workouts available yet.</p>
-
         {% endfor %}
-
     </div>
-
 </div>
-
 {% endblock %}

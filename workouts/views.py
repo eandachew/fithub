@@ -14,22 +14,24 @@ def workout_list(request):
 
     return render(request, 'workouts/workout_list.html', context)
 
+# View workout details
+# Handles premium access
 
 def workout_detail(request, workout_id):
-
     workout = get_object_or_404(WorkoutPlan, id=workout_id)
 
     if workout.is_premium:
 
         if not request.user.is_authenticated:
             messages.warning(request, "Please login to access premium workouts.")
-            return redirect('account_login')
+            return redirect('account_login')  
 
+    
         profile, created = UserProfile.objects.get_or_create(user=request.user)
 
         if not profile.is_premium:
-            messages.warning(request, "You must purchase premium access.")
-            return redirect('checkout')
+            messages.warning(request, "You must purchase premium access to view this workout.")
+            return redirect('premium_checkout')  
 
     context = {
         'workout': workout
