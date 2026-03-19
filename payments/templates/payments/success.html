@@ -2,12 +2,21 @@
 
 {% block content %}
 
-<div class="container">
-
-<h1>Payment Successful 🎉</h1>
-
-<p>You now have access to premium workouts.</p>
-
+<div class="container text-center">
+    {% if payment_type == 'premium' %}
+        <h1>Premium Membership Activated! 🎉</h1>
+        <p>Thank you for upgrading to premium. You now have access to all premium workouts.</p>
+        <div class="mt-4">
+            <a href="{% url 'workouts' %}" class="btn btn-primary btn-lg">Start Working Out</a>
+        </div>
+    {% else %}
+        <h1>Payment Successful! 🎉</h1>
+        <p>Your purchase was successful. Thank you for shopping with FitHub!</p>
+        <div class="mt-4">
+            <a href="{% url 'products' %}" class="btn btn-primary btn-lg">Continue Shopping</a>
+            <a href="{% url 'workouts' %}" class="btn btn-outline-primary btn-lg ml-2">Browse Workouts</a>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}
