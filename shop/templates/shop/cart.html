@@ -6,37 +6,257 @@
     <h1>Your Cart</h1>
 
     {% if products %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>€{{ product.price }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>€{{ product.total_price }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr id="product-{{ product.id }}">
+                    <td>
+                        <strong>{{ product.name }}</strong>
+                        {% if product.image %}
+                        <br><img src="{{ product.image.url }}" width="50" height="50" class="mt-1">
+                        {% endif %}
+                    </td>
+                    <td class="product-price">€{{ product.price }}</td>
+                    <td>
+                        <div class="input-group" style="width: 120px;">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary btn-sm decrement-btn" 
+                                        data-product-id="{{ product.id }}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" 
+                                   class="form-control form-control-sm text-center quantity-input" 
+                                   value="{{ product.quantity }}" 
+                                   data-product-id="{{ product.id }}"
+                                   readonly
+                                   style="background-color: white; width: 50px;">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary btn-sm increment-btn" 
+                                        data-product-id="{{ product.id }}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="product-total">€{{ product.total_price }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger remove-btn" data-product-id="{{ product.id }}">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="table-info">
+                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td colspan="2"><strong id="cart-total">€{{ total }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-    <h3>Total: €{{ total }}</h3>
-
-    <a href="{% url 'shop_checkout' %}" class="btn btn-primary">
-        Proceed to Checkout
-    </a>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <a href="{% url 'products' %}" class="btn btn-secondary">
+                ← Continue Shopping
+            </a>
+        </div>
+        <div class="col-md-6 text-right">
+            <a href="{% url 'shop_checkout' %}" class="btn btn-primary btn-lg">
+                Proceed to Checkout
+            </a>
+        </div>
+    </div>
     
     {% else %}
-    <p>Your cart is empty.</p>
-    <a href="{% url 'products' %}" class="btn btn-primary">Continue Shopping</a>
+    <div class="alert alert-info">
+        <p>Your cart is empty.</p>
+        <a href="{% url 'products' %}" class="btn btn-primary">Continue Shopping</a>
+    </div>
     {% endif %}
 </div>
+
+<!-- JavaScript for Auto-updating Cart with Plus/Minus -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Function to update cart via AJAX
+    function updateCart(productId, newQuantity) {
+        const url = "{% url 'update_cart' 0 %}".replace('0', productId);
+        
+        // Show loading state
+        const row = document.getElementById(`product-${productId}`);
+        const quantityInput = row.querySelector('.quantity-input');
+        const decrementBtn = row.querySelector('.decrement-btn');
+        const incrementBtn = row.querySelector('.increment-btn');
+        const removeBtn = row.querySelector('.remove-btn');
+        
+        quantityInput.disabled = true;
+        decrementBtn.disabled = true;
+        incrementBtn.disabled = true;
+        if (removeBtn) removeBtn.disabled = true;
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                'quantity': newQuantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update the row with new data
+                const productTotal = row.querySelector('.product-total');
+                const cartTotal = document.getElementById('cart-total');
+                
+                // Update quantity display
+                quantityInput.value = data.quantity;
+                
+                // Update product total
+                productTotal.textContent = `€${data.total_price}`;
+                
+                // Update cart total
+                cartTotal.textContent = `€${data.cart_total}`;
+                
+                // If quantity becomes 0, remove the row
+                if (data.quantity === 0) {
+                    row.remove();
+                    // If no products left, reload to show empty cart message
+                    if (document.querySelectorAll('tbody tr').length === 0) {
+                        location.reload();
+                    }
+                } else {
+                    // Show success feedback
+                    showTemporaryFeedback(row, 'success');
+                }
+            } else {
+                showMessage(data.message || 'Error updating cart', 'danger');
+                showTemporaryFeedback(row, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error updating cart', 'danger');
+            showTemporaryFeedback(row, 'error');
+        })
+        .finally(() => {
+            // Re-enable inputs
+            quantityInput.disabled = false;
+            decrementBtn.disabled = false;
+            incrementBtn.disabled = false;
+            if (removeBtn) removeBtn.disabled = false;
+        });
+    }
+    
+    // Handle increment button click
+    document.querySelectorAll('.increment-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productId = this.dataset.productId;
+            const row = document.getElementById(`product-${productId}`);
+            const quantityInput = row.querySelector('.quantity-input');
+            let currentQuantity = parseInt(quantityInput.value);
+            const newQuantity = currentQuantity + 1;
+            if (newQuantity <= 99) {
+                updateCart(productId, newQuantity);
+            } else {
+                showMessage('Maximum quantity is 99', 'warning');
+            }
+        });
+    });
+    
+    // Handle decrement button click
+    document.querySelectorAll('.decrement-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productId = this.dataset.productId;
+            const row = document.getElementById(`product-${productId}`);
+            const quantityInput = row.querySelector('.quantity-input');
+            let currentQuantity = parseInt(quantityInput.value);
+            const newQuantity = currentQuantity - 1;
+            if (newQuantity >= 0) {
+                updateCart(productId, newQuantity);
+            }
+        });
+    });
+    
+    // Handle remove button click
+    document.querySelectorAll('.remove-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to remove this item from your cart?')) {
+                const productId = this.dataset.productId;
+                updateCart(productId, 0);
+            }
+        });
+    });
+    
+    // Helper function to show temporary visual feedback
+    function showTemporaryFeedback(row, type) {
+        const originalBg = row.style.backgroundColor;
+        row.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+        setTimeout(() => {
+            row.style.backgroundColor = originalBg;
+        }, 500);
+    }
+});
+
+// Helper function to show messages
+function showMessage(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    `;
+    
+    const container = document.querySelector('.container');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+</script>
+
+<style>
+.quantity-input {
+    text-align: center;
+    width: 50px;
+    padding: 0;
+}
+.increment-btn, .decrement-btn {
+    cursor: pointer;
+    padding: 0 10px;
+}
+.increment-btn:active, .decrement-btn:active {
+    transform: scale(0.95);
+}
+.table img {
+    border-radius: 4px;
+}
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+</style>
 
 {% endblock %}
