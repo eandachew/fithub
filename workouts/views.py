@@ -52,10 +52,18 @@ def workout_detail(request, workout_id):
         )
         progress_dict = {p.exercise.id: p.completed for p in progress}
 
+        # Calculate percentage
+    total_exercises = exercises.count()
+    if total_exercises > 0:
+        completed_exercises = sum(1 for completed in progress_dict.values() if completed)
+        completion_percent = int((completed_exercises / total_exercises) * 100)
+
+
     context = {
         'workout': workout,
         'has_premium': has_premium,
         'progress': progress_dict,  
+        'completion_percent': completion_percent,
     }
 
     return render(request, 'workouts/workout_detail.html', context)

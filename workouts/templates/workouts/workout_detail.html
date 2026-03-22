@@ -26,6 +26,18 @@
             <h4>Description</h4>
             <p>{{ workout.description }}</p>
 
+            {% if user.is_authenticated %}
+                <div class="mt-4">
+                     <h5>Workout Progress: {{ completion_percent }}%</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar"
+                                  style="width: {{ completion_percent }}%;"
+                                  aria-valuenow="{{ completion_percent }}" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                </div>
+{% endif %}
+
             <!-- Exercises with Progress Tracker -->
             <h3 class="mt-4">Exercises</h3>
             <ul class="list-group">
@@ -79,18 +91,46 @@
 
 <!-- JavaScript for AJAX Progress Tracking -->
 <script>
-    document.querySelectorAll(".progress-checkbox").forEach(function(checkbox) {
-        checkbox.addEventListener("change", function() {
-            fetch("{% url 'update_progress' %}", {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}",
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: "exercise_id=" + this.dataset.exerciseId +
-                      "&completed=" + this.checked
+    document.addEventListener("DOMContentLoaded", function() {
+    
+        const checkboxes = document.querySelectorAll(".progress-checkbox");
+        const progressBar = document.querySelector(".progress-bar");
+    
+        function updateProgressBar(completionPercent) {
+            progressBar.style.width = completionPercent + "%";
+            progressBar.setAttribute("aria-valuenow", completionPercent);
+            progressBar.textContent = completionPercent + "%";
+        }
+    
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+    
+                fetch("{% url 'update_progress' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "exercise_id=" + this.dataset.exerciseId +
+                          "&completed=" + this.checked
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        // Recalculate completion percent
+                        let total = checkboxes.length;
+                        let completed = 0;
+                        checkboxes.forEach(cb => {
+                            if(cb.checked) completed++;
+                        });
+                        let percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+                        updateProgressBar(percent);
+                    }
+                });
+    
             });
         });
+    
     });
     </script>
 
