@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_tags %}
 
 {% block content %}
 
@@ -7,12 +8,14 @@
     <h1 class="mb-4">{{ workout.title }}</h1>
 
     <div class="row">
+        <!-- Workout Image -->
         <div class="col-md-6">
             {% if workout.image %}
-            <img src="{{ workout.image.url }}" class="img-fluid">
+                <img src="{{ workout.image.url }}" class="img-fluid">
             {% endif %}
         </div>
 
+        <!-- Workout Details -->
         <div class="col-md-6">
             <h4>Difficulty</h4>
             <p>{{ workout.difficulty }}</p>
@@ -22,34 +25,43 @@
 
             <h4>Description</h4>
             <p>{{ workout.description }}</p>
-            
-            <h3 class="mt-4">Exercises</h3>
 
+            <!-- Exercises with Progress Tracker -->
+            <h3 class="mt-4">Exercises</h3>
             <ul class="list-group">
                 {% for exercise in workout.exercises.all %}
-                <li class="list-group-item">
-                    <strong>{{ exercise.name }}</strong><br>
-                    Sets: {{ exercise.sets }} |
-                    Reps: {{ exercise.reps }} |
-                    Rest: {{ exercise.rest_seconds }} sec
-                </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ exercise.name }}</strong><br>
+                            Sets: {{ exercise.sets }} |
+                            Reps: {{ exercise.reps }} |
+                            Rest: {{ exercise.rest_seconds }} sec
+                        </div>
+                        {% if user.is_authenticated %}
+                            <input type="checkbox"
+                                   class="progress-checkbox"
+                                   data-exercise-id="{{ exercise.id }}"
+                                   {% if progress|get_item:exercise.id %}checked{% endif %}>
+                        {% endif %}
+                    </li>
                 {% empty %}
-                <li class="list-group-item">
-                    No exercises added yet.
-                </li>
+                    <li class="list-group-item">
+                        No exercises added yet.
+                    </li>
                 {% endfor %}
             </ul>
 
+            <!-- Premium Workout Warning -->
             {% if workout.is_premium %}
                 {% if user.is_authenticated %}
                     {% if not has_premium %}
-                    <div class="alert alert-warning mt-3">
-                        <strong>🔒 Premium Workout Plan</strong><br>
-                        <p>This is a premium workout. Subscribe to unlock full access.</p>
-                        <a href="{% url 'premium_checkout' %}" class="btn btn-warning">
-                            Upgrade to Premium - €19.99
-                        </a>
-                    </div>
+                        <div class="alert alert-warning mt-3">
+                            <strong>🔒 Premium Workout Plan</strong><br>
+                            <p>This is a premium workout. Subscribe to unlock full access.</p>
+                            <a href="{% url 'premium_checkout' %}" class="btn btn-warning">
+                                Upgrade to Premium - €19.99
+                            </a>
+                        </div>
                     {% endif %}
                 {% else %}
                     <div class="alert alert-warning mt-3">
@@ -64,5 +76,22 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScript for AJAX Progress Tracking -->
+<script>
+    document.querySelectorAll(".progress-checkbox").forEach(function(checkbox) {
+        checkbox.addEventListener("change", function() {
+            fetch("{% url 'update_progress' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "exercise_id=" + this.dataset.exerciseId +
+                      "&completed=" + this.checked
+            });
+        });
+    });
+    </script>
 
 {% endblock %}
