@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'payments',
     'shop',
     'profiles',
+    'pages',
+
     
     
 
