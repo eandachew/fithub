@@ -122,23 +122,19 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                // Update the row with new data
+
                 const productTotal = row.querySelector('.product-total');
                 const cartTotal = document.getElementById('cart-total');
                 
-                // Update quantity display
                 quantityInput.value = data.quantity;
                 
-                // Update product total
                 productTotal.textContent = `€${data.total_price}`;
                 
-                // Update cart total
                 cartTotal.textContent = `€${data.cart_total}`;
                 
-                // If quantity becomes 0, remove the row
                 if (data.quantity === 0) {
                     row.remove();
-                    // If no products left, reload to show empty cart message
+                
                     if (document.querySelectorAll('tbody tr').length === 0) {
                         location.reload();
                     }
