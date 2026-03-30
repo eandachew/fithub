@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-if os.path .isfile('env.py'):
+if os.path.isfile('env.py'):
     import env
 import dj_database_url
 from pathlib import Path
@@ -31,7 +31,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'localhost'
+    'localhost',
     'fit-hub-e72d29259775.herokuapp.com'
 ]
 
