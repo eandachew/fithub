@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'workouts',
     'payments',
     'shop',
-    'Profiles',
+    'Procfile',
     'pages',
 
 ]
