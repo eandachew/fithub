@@ -5,18 +5,20 @@ from profiles.models import UserProfile
 from django.contrib import messages
 from .forms import ProfileUpdateForm
 
-
 # Create your views here.
 
 @login_required
 def profile_home(request):
-
-    # Get user's profile
-    profile = UserProfile.objects.get(user=request.user)
-
+    # Get or create user's profile (this fixes the DoesNotExist error)
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
+    # Optional: Show a message if profile was just created
+    if created:
+        messages.info(request, "Welcome! Your profile has been created.")
+    
     # Get user's orders
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
-
+    
     context = {
         "profile": profile,
         "orders": orders
@@ -25,8 +27,9 @@ def profile_home(request):
 
 @login_required
 def edit_profile(request):
-    profile = request.user.profile
-
+    # Get or create profile (this fixes the edit profile too)
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
     if request.method == "POST":
         form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
@@ -35,5 +38,5 @@ def edit_profile(request):
             return redirect('profile_home')
     else:
         form = ProfileUpdateForm(instance=profile)
-
+    
     return render(request, "profiles/edit_profile.html", {'form': form})
