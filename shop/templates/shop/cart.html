@@ -25,6 +25,12 @@
                         {% if product.image %}
                         <br><img src="{{ product.image.url }}" width="50" height="50" class="mt-1">
                         {% endif %}
+                        <!-- STOCK WARNING ADDED HERE -->
+                        {% if product.stock < product.quantity %}
+                            <br><small class="text-danger">⚠️ Only {{ product.stock }} left in stock!</small>
+                        {% elif product.stock < 10 %}
+                            <br><small class="text-warning">Only {{ product.stock }} left!</small>
+                        {% endif %}
                     </td>
                     <td class="product-price">€{{ product.price }}</td>
                     <td>
@@ -39,6 +45,7 @@
                                    class="form-control form-control-sm text-center quantity-input" 
                                    value="{{ product.quantity }}" 
                                    data-product-id="{{ product.id }}"
+                                   data-max-stock="{{ product.stock }}"
                                    readonly
                                    style="background-color: white; width: 50px;">
                             <div class="input-group-append">
@@ -102,6 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const decrementBtn = row.querySelector('.decrement-btn');
         const incrementBtn = row.querySelector('.increment-btn');
         const removeBtn = row.querySelector('.remove-btn');
+        const maxStock = parseInt(quantityInput.dataset.maxStock);
+        
+        // Check if new quantity exceeds stock
+        if (newQuantity > maxStock) {
+            showMessage(`Sorry, only ${maxStock} units available in stock!`, 'danger');
+            return;
+        }
         
         quantityInput.disabled = true;
         decrementBtn.disabled = true;
@@ -168,12 +182,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const productId = this.dataset.productId;
             const row = document.getElementById(`product-${productId}`);
             const quantityInput = row.querySelector('.quantity-input');
+            const maxStock = parseInt(quantityInput.dataset.maxStock);
             let currentQuantity = parseInt(quantityInput.value);
             const newQuantity = currentQuantity + 1;
-            if (newQuantity <= 99) {
+            if (newQuantity <= maxStock) {
                 updateCart(productId, newQuantity);
             } else {
-                showMessage('Maximum quantity is 99', 'warning');
+                showMessage(`Maximum quantity is ${maxStock} (only ${maxStock} in stock)`, 'warning');
             }
         });
     });

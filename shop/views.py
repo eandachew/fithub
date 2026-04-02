@@ -18,16 +18,33 @@ def product_detail(request, product_id):
     return render(request, 'shop/product_detail.html', context)
 
 def add_to_cart(request, product_id):
+    # Get the product to check stock
+    product = get_object_or_404(Product, id=product_id)
+    
+    # Get quantity from POST or default to 1
+    quantity = int(request.POST.get('quantity', 1))
+    
+    # Check if enough stock
+    if quantity > product.stock:
+        messages.error(request, f"Sorry, only {product.stock} units of {product.name} available!")
+        return redirect('product_detail', product_id=product_id)
+    
     cart = request.session.get('cart', {})
     product_id = str(product_id)
     
+    # Check if adding would exceed stock
+    current_qty = cart.get(product_id, 0)
+    if current_qty + quantity > product.stock:
+        messages.error(request, f"Cannot add {quantity} more. Only {product.stock - current_qty} available in stock!")
+        return redirect('product_detail', product_id=product_id)
+    
     if product_id in cart:
-        cart[product_id] += 1
+        cart[product_id] += quantity
     else:
-        cart[product_id] = 1
+        cart[product_id] = quantity
     
     request.session['cart'] = cart
-    messages.success(request, "Product added to cart")
+    messages.success(request, f"{quantity} x {product.name} added to cart")
     return redirect('products')
 
 def update_cart(request, product_id):
@@ -37,19 +54,32 @@ def update_cart(request, product_id):
         product_id = str(product_id)
         quantity = int(request.POST.get('quantity', 1))
         
+        # Get product to check stock
+        product = get_object_or_404(Product, id=product_id)
+        
         if quantity <= 0:
             # Remove item if quantity is 0 or less
             if product_id in cart:
                 del cart[product_id]
         else:
+            # Check if requested quantity exceeds stock
+            if quantity > product.stock:
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': f'Sorry, only {product.stock} units available!'
+                    }, status=400)
+                else:
+                    messages.error(request, f"Sorry, only {product.stock} units of {product.name} available!")
+                    return redirect('view_cart')
+            
             # Update quantity
             cart[product_id] = quantity
         
         request.session['cart'] = cart
         
         # Calculate new total for this product and overall cart
-        product = get_object_or_404(Product, id=product_id)
-        total_price = product.price * quantity
+        total_price = product.price * quantity if quantity > 0 else 0
         
         # Calculate cart total
         cart_total = 0
@@ -63,7 +93,8 @@ def update_cart(request, product_id):
                 'status': 'success',
                 'quantity': quantity,
                 'total_price': f"{total_price:.2f}",
-                'cart_total': f"{cart_total:.2f}"
+                'cart_total': f"{cart_total:.2f}",
+                'stock_remaining': product.stock
             })
         else:
             # Regular form submission
