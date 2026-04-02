@@ -10,6 +10,17 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # SHOP CHECKOUT (cart purchases)
 def shop_checkout(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "Please log in to complete your purchase")
+        
+        try:
+            return redirect('account_login') 
+        except:
+            try:
+                return redirect('login')  
+            except:
+                return redirect('/accounts/login/')
+
     # Get cart from session
     cart = request.session.get('cart', {})
     
