@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from profiles.models import UserProfile
+from profiles.models import UserProfile, Delivery  
 from shop.models import Product, Order, OrderItem
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -27,6 +27,23 @@ def shop_checkout(request):
     if not cart:
         messages.warning(request, "Your cart is empty.")
         return redirect('view_cart')
+    
+    # Check if we have delivery info from the form
+    if request.method == 'POST':
+        # Save delivery information
+        delivery = Delivery.objects.create(
+            user=request.user,
+            full_name=request.POST.get('full_name'),
+            email=request.POST.get('email'),
+            phone_number=request.POST.get('phone_number'),
+            address_line1=request.POST.get('address_line1'),
+            address_line2=request.POST.get('address_line2', ''),
+            city=request.POST.get('city'),
+            postal_code=request.POST.get('postal_code'),
+            country=request.POST.get('country'),
+        )
+        # Store delivery ID in session
+        request.session['delivery_id'] = delivery.id
     
     # Create line items from cart and calculate total
     line_items = []
@@ -70,8 +87,11 @@ def shop_checkout(request):
                 quantity=quantity,
                 price=product.price
             )
+            # Reduce stock
+            product.stock -= quantity
+            product.save()
         
-        # Create Stripe session with order ID
+        # Create Stripe session with order ID and delivery ID
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=line_items,
@@ -82,7 +102,8 @@ def shop_checkout(request):
             cancel_url=request.build_absolute_uri(reverse('view_cart')),
             metadata={
                 'order_id': order.id,
-                'user_id': request.user.id
+                'user_id': request.user.id,
+                'delivery_id': request.session.get('delivery_id', ''),
             }
         )
         
@@ -105,14 +126,26 @@ def shop_success(request):
             order.paid = True
             order.save()
             messages.success(request, f"Order #{order.id} completed successfully!")
+            
+            # Show delivery info if available
+            delivery_id = request.session.get('delivery_id')
+            if delivery_id:
+                try:
+                    delivery = Delivery.objects.get(id=delivery_id, user=request.user)
+                    messages.info(request, f"Delivery address saved: {delivery.full_address}")
+                except Delivery.DoesNotExist:
+                    pass
+                    
         except Order.DoesNotExist:
             messages.warning(request, "Order not found.")
     
-    # Clear the cart after successful payment
+    # Clear the cart and session after successful payment
     if 'cart' in request.session:
         del request.session['cart']
     if 'current_order_id' in request.session:
         del request.session['current_order_id']
+    if 'delivery_id' in request.session:
+        del request.session['delivery_id']
     
     return render(request, "payments/success.html", {
         'payment_type': 'shop'

@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import Product, Order, OrderItem
+from profiles.models import Delivery
+
 
 def product_list(request):
     products = Product.objects.all()
@@ -152,3 +154,67 @@ def view_cart(request):
     }
     
     return render(request, "shop/cart.html", context)
+
+def delivery_form(request):
+    """Show delivery form before checkout"""
+    cart = request.session.get('cart', {})
+    
+    if not cart:
+        messages.warning(request, "Your cart is empty.")
+        return redirect('view_cart')
+    
+    cart_items = {}
+    cart_total = 0
+    
+    for item_id, quantity in cart.items():
+        try:
+            product = Product.objects.get(id=item_id)
+            cart_items[item_id] = {
+                'name': product.name,
+                'quantity': quantity,
+                'price': product.price,
+            }
+            cart_total += product.price * quantity
+        except Product.DoesNotExist:
+            continue
+    
+    context = {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+    }
+    return render(request, 'shop/delivery_form.html', context)
+
+
+def process_delivery(request):
+    """Save delivery information and proceed to payment"""
+    if request.method == 'POST':
+        # Save delivery info to session
+        request.session['delivery_info'] = {
+            'full_name': request.POST.get('full_name'),
+            'email': request.POST.get('email'),
+            'phone_number': request.POST.get('phone_number'),
+            'address_line1': request.POST.get('address_line1'),
+            'address_line2': request.POST.get('address_line2', ''),
+            'city': request.POST.get('city'),
+            'postal_code': request.POST.get('postal_code'),
+            'country': request.POST.get('country'),
+        }
+        
+        # If user is logged in, save to database
+        if request.user.is_authenticated:
+            Delivery.objects.create(
+                user=request.user,
+                full_name=request.POST.get('full_name'),
+                email=request.POST.get('email'),
+                phone_number=request.POST.get('phone_number'),
+                address_line1=request.POST.get('address_line1'),
+                address_line2=request.POST.get('address_line2', ''),
+                city=request.POST.get('city'),
+                postal_code=request.POST.get('postal_code'),
+                country=request.POST.get('country'),
+            )
+        
+        # Redirect to payment
+        return redirect('shop_checkout')
+    
+    return redirect('view_cart')
