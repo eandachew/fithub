@@ -1,5 +1,4 @@
 # fithub
-# AddisTalk2 
 ## Table of Contents
 
 - [Project Goals](#project-goals)
@@ -189,5 +188,30 @@ As a user, I want to add products to my cart, So that I can purchase multiple it
 - Acceptance criteria 2: Cart shows quantity and total price
 - Acceptance criteria 3: Users can update or remove items from cart
 - Acceptance criteria 4: Cart persists in session for non-logged-in users
+
+### Provide Delivery Address
+As a customer, I want to enter my delivery address at checkout, 
+So that my purchased items can be shipped to me.
+
+**Acceptance Criteria**
+- Acceptance criteria 1: Checkout process includes a delivery information form
+
+- Acceptance criteria 2: Form requires full name, email, phone number, and address
+
+- Acceptance criteria 3: Address fields include street, city, postal code, and country
+
+- Acceptance criteria 5: Delivery information is saved before payment is processed
+
+### View Customer Orders
+As an admin, I want to see all customer orders, So that I can process and fulfills them.
+
+**Acceptance Criteria**
+
+- Acceptance criteria 1: Admin can view list of all orders with order numbers
+
+- Acceptance criteria 2: Each order shows customer name, total amount, and date
+
+- Acceptance criteria 5: Order details show which products were purchased
+
 ## Database models and schema
 
