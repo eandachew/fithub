@@ -1,0 +1,18 @@
+.quantity-input {
+    text-align: center;
+    width: 50px;
+    padding: 0;
+}
+.increment-btn, .decrement-btn {
+    cursor: pointer;
+    padding: 0 10px;
+}
+.increment-btn:active, .decrement-btn:active {
+    transform: scale(0.95);
+}
+.table img {
+    border-radius: 4px;
+}
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
