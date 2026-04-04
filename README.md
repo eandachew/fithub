@@ -213,5 +213,118 @@ As an admin, I want to see all customer orders, So that I can process and fulfil
 
 - Acceptance criteria 5: Order details show which products were purchased
 
-## Database models and schema
+### Database Models and Schema
+
+### Models Overview
+
+#### Authentication & User Management (Django Allauth)
+
+**User** (Built-in Django User Model)
+- Fields: username, email, password, is_active, is_staff, date_joined, last_login
+- Role: Base user authentication and account management
+- Relationships: 
+  - One-to-One with UserProfile
+  - One-to-Many with Orders
+  - One-to-Many with Deliveries
+
+**UserProfile** (profiles/models.py)
+- Fields: user, bio, profile_image, is_premium
+- Purpose: Extends user with fitness profile information and premium status
+- Relationships: Belongs to One User
+- Special: Auto-created via Django signals when user registers
+
+**Delivery** (profiles/models.py)
+- Fields: user, full_name, email, phone_number, address_line1, address_line2, city, postal_code, country, created_at
+- Purpose: Stores customer shipping addresses for product deliveries
+- Relationships: Belongs to One User (ForeignKey)
+- Features: Full address property method for formatted addresses
+
+#### Shop & E-commerce
+
+**Product** (shop/models.py)
+- Fields: name, description, price, image, stock
+- Purpose: Manages fitness products available for purchase
+- Features: 
+  - Stock tracking for inventory management
+  - Image upload support via AWS S3
+  - Low stock warnings (admin feature)
+
+**Order** (shop/models.py)
+- Fields: user, created_at, total, paid
+- Purpose: Tracks customer purchase transactions
+- Relationships: 
+  - Belongs to One User
+  - Has many OrderItems
+- Features: Paid status tracking for order fulfillment
+
+**OrderItem** (shop/models.py)
+- Fields: order, product, quantity, price
+- Purpose: Individual line items within an order
+- Relationships: 
+  - Belongs to One Order
+  - Belongs to One Product
+- Features: Captures price at time of purchase (historical record)
+
+#### Workout Management
+
+**Workout** (workouts/models.py)
+- Fields: title, description, difficulty, duration, is_premium
+- Purpose: Fitness workout plans for users
+- Features:
+  - is_premium flag for premium content restriction
+  - Difficulty levels (Beginner, Intermediate, Advanced)
+- Relationships: Has many Exercises
+
+**Exercise** (workouts/models.py)
+- Fields: workout, name, sets, reps, duration
+- Purpose: Individual exercises within workout plans
+- Relationships: Belongs to One Workout
+
+**Progress** (workouts/models.py)
+- Fields: user, exercise, completed, completed_at
+- Purpose: Tracks user workout completion progress
+- Relationships:
+  - Belongs to One User
+  - Belongs to One Exercise
+- Features: Timestamp tracking for completion history
+
+#### Payments & Premium
+
+**Stripe Integration**
+- Used for secure payment processing
+- Handles checkout sessions and transactions
+- Ensures safe handling of payment data
+
+**Functionality:**
+- Users can purchase premium access
+- Payments are processed securely via Stripe
+- Payment status is stored in the database
+- Checkout session management
+- Secure metadata storage (order_id, user_id)
+
+**Premium Access Control**
+- Activated automatically after successful Stripe payment
+- Admin can manually grant/revoke premium status
+
+#### Contact & Communication
+
+**Contact Form** (pages app)
+- Fields: name, email, message
+- Purpose: Customer inquiries and support requests
+- Features:
+  - Email notification to site owner
+  - Auto-reply confirmation to customer
+  - Gmail SMTP integration
+
+#### Django Allauth (Authentication System)
+- **Purpose**: Complete user authentication management
+- **Features**:
+  - Handles user authentication workflows
+  - Email verification and account management
+  - Secure login, logout, and registration
+  - Password reset functionality
+- **Functionality**:
+  - Users can register with email confirmation
+  - Secure session management
+  - Account recovery options
 
