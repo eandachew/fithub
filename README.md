@@ -328,3 +328,223 @@ As an admin, I want to see all customer orders, So that I can process and fulfil
   - Secure session management
   - Account recovery options
 
+## WireFrames
+
+  - Phone
+    - [Wireframes for phones.](readme-images/wireframes/)
+  - Tablet
+    - [Wireframes for tablets.](readme-images/wireframes/)
+  - Desktop
+    - [Wireframes for desktops.](readme-images/wireframes/)
+
+## Database models and schema
+### Models Overview
+
+#### Authentication & User Management (Django Allauth)
+
+**User** (Built-in Django User Model)
+- Fields: username, email, password, is_active, is_staff, date_joined, last_login
+- Role: Base user authentication and account management
+- Relationships: 
+  - One-to-One with UserProfile
+  - One-to-Many with Orders
+  - One-to-Many with Deliveries
+
+**UserProfile** (profiles/models.py)
+- Fields: user, bio, profile_image, is_premium
+- Purpose: Extends user with fitness profile information and premium status
+- Relationships: Belongs to One User
+- Special: Auto-created via Django signals when user registers
+
+**Delivery** (profiles/models.py)
+- Fields: user, full_name, email, phone_number, address_line1, address_line2, city, postal_code, country, created_at
+- Purpose: Stores customer shipping addresses for product deliveries
+- Relationships: Belongs to One User (ForeignKey)
+- Features: Full address property method for formatted addresses
+
+#### Shop 
+
+**Product** (shop/models.py)
+- Fields: name, description, price, image, stock
+- Purpose: Manages fitness products available for purchase
+- Features: 
+  - Stock tracking for inventory management
+  - Image upload support via AWS S3
+  - Low stock warnings (admin feature)
+
+**Order** (shop/models.py)
+- Fields: user, created_at, total, paid
+- Purpose: Tracks customer purchase transactions
+- Relationships: 
+  - Belongs to One User
+  - Has many OrderItems
+- Features: Paid status tracking for order fulfillment
+
+**OrderItem** (shop/models.py)
+- Fields: order, product, quantity, price
+- Purpose: Individual line items within an order
+- Relationships: 
+  - Belongs to One Order
+  - Belongs to One Product
+- Features: Captures price at time of purchase (historical record)
+
+#### Workout Management
+
+**Workout** (workouts/models.py)
+- Fields: title, description, difficulty, duration, is_premium
+- Purpose: Fitness workout plans for users
+- Features:
+  - is_premium flag for premium content restriction
+  - Difficulty levels (Beginner, Intermediate, Advanced)
+- Relationships: Has many Exercises
+
+**Exercise** (workouts/models.py)
+- Fields: workout, name, sets, reps, duration
+- Purpose: Individual exercises within workout plans
+- Relationships: Belongs to One Workout
+
+**Progress** (workouts/models.py)
+- Fields: user, exercise, completed, completed_at
+- Purpose: Tracks user workout completion progress
+- Relationships:
+  - Belongs to One User
+  - Belongs to One Exercise
+- Features: Timestamp tracking for completion history
+
+#### Payments & Premium
+
+**Stripe Integration**
+- Used for secure payment processing
+- Handles checkout sessions and transactions
+- Ensures safe handling of payment data
+
+**Functionality:**
+- Users can purchase premium access
+- Payments are processed securely via Stripe
+- Payment status is stored in the database
+- Checkout session management
+- Webhook handling for payment confirmation
+- Secure metadata storage (order_id, user_id)
+
+**Premium Access Control**
+- Managed via UserProfile.is_premium boolean
+- Activated automatically after successful Stripe payment
+- Admin can manually grant/revoke premium status
+
+#### Contact 
+
+**Contact Form** (pages app)
+- Fields: name, email, message
+- Purpose: Customer inquiries and support requests
+- Features:
+  - Email notification to site owner
+  - Auto-reply confirmation to customer
+  - Gmail SMTP integration
+
+#### Stripe API
+- **Purpose**: Secure payment processing for premium subscriptions and product purchases
+- **Features**:
+  - Checkout session creation and management
+  - Secure payment intent handling
+  - Payment confirmation and verification
+- **Functionality**:
+  - Users can purchase premium access
+  - Users can buy physical products
+  - Payments are processed securely via Stripe
+  - Payment status is stored in the database
+  - Order confirmation after successful payment
+
+#### Django Allauth (Authentication System)
+- **Purpose**: Complete user authentication management
+- **Features**:
+  - Handles user authentication workflows
+  - Email verification and account management
+  - Secure login, logout, and registration
+  - Password reset functionality
+  - Social account integration (optional)
+- **Functionality**:
+  - Users can register with email confirmation
+  - Secure session management
+  - Account recovery options
+
+## Design
+
+### Colour Scheme
+
+The platform uses a custom colour palette defined in CSS variables for consistency and easy maintenance.
+
+**Primary Colours:**
+- **Primary Red (`#ff4d4d`)** : Used for all primary buttons (Add to Cart, Checkout, Upgrade) and hover states on navigation links. This energetic red reinforces the fitness brand identity.
+- **Dark Background (`#1f1f1f`)** : Applied to the navbar, creating a strong, modern contrast against the content area.
+- **Accent Light Grey (`#f5f5f5`)** : Serves as the main background colour for the body, reducing eye strain and providing a clean canvas for content.
+
+**Functional & Feedback Colours:**
+- **Success Green:** Used for positive indicators, stock availability messages, and successful action confirmations (via Bootstrap alert classes).
+- **Danger Red (`#dc3545`)** : Used for error messages, stock warnings when inventory is low, and destructive actions like removing items from the cart.
+
+**Text Colours:**
+- **Text Dark (`#333`)** : Primary text colour for body content, ensuring high readability.
+- **Text Muted (`#6c757d`)** : Used for secondary information and form placeholders (via Bootstrap).
+
+### Typography
+
+The platform employs a hybrid font strategy combining a modern sans-serif body font with a bold display font for headings.
+
+**Font Stack:**
+- **Body Text:** `'Montserrat', sans-serif` - Clean, modern, and highly readable across all devices
+- **Headings:** `'Bebas Neue', sans-serif` - Bold, impactful letter-spacing for H1-H4 tags
+
+
+**Images**
+- Workout-related imagery genrated using using Grok.
+- Clean and minimal design
+- Responsive scaling
+
+**Icons**
+
+The platform uses **Font Awesome 6** icons extensively throughout the interface to improve visual communication and user interaction.
+
+**Navigation Icons:**
+| Link | Icon | Purpose |
+|------|------|---------|
+| Home | `fa-home` | Returns to homepage |
+| Workouts | `fa-dumbbell` | Access fitness plans |
+| Shop | `fa-store` | Browse fitness products |
+| About | `fa-info-circle` | Learn about FitHub |
+| Contact | `fa-envelope` | Send inquiries |
+| Cart | `fa-shopping-cart` | View shopping cart |
+
+**User Action Icons:**
+| Action | Icon | Purpose |
+|--------|------|---------|
+| Profile | `fa-user` | View user profile |
+| Login | `fa-sign-in-alt` | Sign into account |
+| Logout | `fa-sign-out-alt` | Sign out of account |
+| Register | `fa-user-plus` | Create new account |
+
+**Cart & Checkout Icons:**
+| Action | Icon | Purpose |
+|--------|------|---------|
+| Add to Cart | `fa-shopping-cart` | Add product to cart |
+| Remove Item | `fa-trash` | Delete cart item |
+| Increase Quantity | `fa-plus` | Add one more unit |
+| Decrease Quantity | `fa-minus` | Remove one unit |
+
+**Premium & Feedback Icons:**
+| Element | Icon | Purpose |
+|---------|------|---------|
+| Premium Feature | `fa-crown` | Indicates premium content |
+| Success Message | `fa-check-circle` | Confirms successful action |
+| Error Message | `fa-exclamation-triangle` | Alerts user to errors |
+| Info Message | `fa-info-circle` | Provides helpful information |
+| Warning Message | `fa-exclamation-circle` | Warns about important issues |
+
+**Progress Indicators:**
+| Indicator | Icon | Purpose |
+|-----------|------|---------|
+| Workout Progress | `fa-chart-line` | Shows fitness journey progress |
+| Loading State | `fa-spinner fa-spin` | Indicates AJAX processing |
+| Stock Status | `fa-check-circle` / `fa-times-circle` | Shows product availability |
+| Payment Processing | `fa-credit-card` | Indicates Stripe checkout |
+
+## Features  
