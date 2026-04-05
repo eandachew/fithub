@@ -548,3 +548,361 @@ The platform uses **Font Awesome 6** icons extensively throughout the interface 
 | Payment Processing | `fa-credit-card` | Indicates Stripe checkout |
 
 ## Features  
+
+### Home app
+
+- **Hero Section**
+
+    - Upon opening the site, the user is greeted with a vibrant hero section that clearly defines FitHub as a fitness platform.
+    - The hero section features a gradient background (purple to blue) with white text for high contrast.
+    - Two call-to-action buttons are prominently displayed: "Start Working Out" and "Shop Now".
+    - The hero section encourages users to begin their fitness journey immediately.
+
+    <p align="center">
+        <img src="readme-images/features/home_page.png" alt="Hero section with gradient background and CTA buttons" height="180px" width="320px"/>
+    </p>
+
+- **Features Section**
+    - Three feature cards explain the core benefits of FitHub:
+        - **Workout Plans:** Access premium and free workout plans designed by fitness experts
+        - **Track Progress:** Monitor your fitness journey and celebrate achievements
+        - **Premium Access:** Unlock exclusive content with premium subscription
+    - Each card includes a Font Awesome icon (dumbbell, chart-line, crown) for visual appeal
+    - Cards have hover effects with shadow for interactive feedback
+
+    <p align="center">
+        <img src="readme-images/features/features-section.png" alt="Three feature cards showing workout plans, progress tracking, and premium access" height="200px" width="450px"/>
+    </p>
+
+- **Featured Products**
+    - The homepage displays up to 2 featured products from the shop database
+    - Each product card shows: image, name, price, and "View Details" button
+    - Products are fetched dynamically from the Product model
+    - Empty state message appears when no products are available
+    - "View All Products" button links to the full shop page
+
+    <p align="center">
+        <img src="readme-images/features/featured-products.png" alt="Featured products section showing fitness equipment" height="200px" width="450px"/>
+    </p>
+
+- **Premium Call-to-Action**
+    - Section promotes premium subscription to non-premium users only
+    - Shows €19.99/month pricing with list of benefits
+    - "Upgrade Now" button links to Stripe checkout
+    - **Conditional Display:** Hidden completely for users who already have premium access
+    - Guest users see the upgrade prompt with login option
+
+    <p align="center">
+        <img src="readme-images/features/premium-cta.png" alt="Premium upgrade section with pricing and benefits" height="180px" width="400px"/>
+    </p>
+
+- **Navigation System**
+    - Fixed navbar with dark background (`#1f1f1f`) and brand logo
+    - Font Awesome icons on all navigation links for improved visual recognition
+    - Navigation links include: Home, Workouts, Shop, About, Contact, Cart 
+    - User-specific links: Profile/Logout (logged in) or Login/Register (guests)
+    - Responsive navbar collapses to hamburger menu on mobile devices
+
+    <p align="center">
+        <img src="readme-images/features/navigation.png" alt="Navigation bar with icons for all menu items" height="80px" width="450px"/>
+    </p>
+
+- **Interactive Elements**
+    - All buttons have hover effects with colour transitions
+    - Primary buttons use brand red (`#ff4d4d`) with darker hover state
+    - Cards have subtle shadow effects that elevate on hover
+    - Loading states during AJAX requests (cart updates)
+    - Success/error messages auto-dismiss after 3 seconds
+
+- **Responsive Design**
+    - Mobile-first approach using Bootstrap 4.6 grid system
+    - Cards stack vertically on screens under 768px
+    - Hero section text and buttons adjust spacing on mobile
+    - Navigation collapses to hamburger menu with toggle button
+    - Images scale appropriately across all device sizes
+
+    <p align="center">
+        <img src="readme-images/features/mobile-home.jpeg" alt="Homepage on mobile device showing stacked layout" height="400px" width="200px"/>
+    </p>
+
+- **Dynamic Content**
+    - Featured products automatically update when new products are added to shop
+    - Premium CTA intelligently hides for existing premium members
+    - User-specific navigation shows different options based on authentication status
+    - Messages display for user actions (add to cart, login required, etc.)
+
+- **Performance Optimizations**
+    - Only 2 featured products queried to minimize database load
+    - Images use `object-fit: cover` for consistent sizing
+    - Bootstrap CDN for faster loading
+    - Font Awesome icons loaded via CDN
+    - Custom CSS minimal and optimized
+
+- **Accessibility Features**
+    - High contrast text on gradient hero section
+    - Alt text on all product images
+    - Semantic HTML structure
+    - Keyboard navigable links and buttons
+    - ARIA labels on icon-only elements
+
+- **Future Enhancements**
+    - Newsletter signup section (planned)
+    - Blog preview showing latest posts (planned)
+    - Testimonials section from premium members (planned)
+    - Workout progress preview for logged-in users (planned)
+    - Animated counters for user statistics (planned)
+
+### Workout app
+
+#### View All Workouts
+- Users can browse all available workout plans from the navigation menu
+- Workouts are displayed in a responsive card grid layout
+- Each workout card shows title, difficulty level, duration, and premium status
+- Premium workouts are clearly marked with a crown icon for non-subscribers
+
+<p align="center">
+    <img src="readme-images/features/workouts_page.png" alt="Workouts list page showing premium and free workouts" height="250px" width="500px"/>
+</p>
+
+#### Detailed Workout Pages
+- Clicking any workout opens a detailed page with complete information
+- Page displays: title, description, difficulty level, duration, and exercise list
+- Premium workouts show a locked message for non-premium users
+- Premium users see full exercise details with sets and reps
+
+<p align="center">
+    <img src="readme-images/features/workout_withexercise and progress.png" alt="Detailed workout page with exercises" height="300px" width="500px"/>
+</p>
+
+#### Exercises with Sets and Reps
+- Each workout contains multiple exercises
+- Exercises display name, sets, reps, and duration
+- Users can mark individual exercises as complete
+- Completion status is saved to user profile
+
+#### Premium Workout Restriction
+- Premium workouts are only accessible to users with active subscription
+- Non-premium users see upgrade prompt with link to premium checkout
+- Backend verification prevents URL bypass attempts
+- Premium status is checked on every workout access
+
+<p align="center">
+    <img src="readme-images/features/Premium workouts.png" alt="Premium workout locked message" height="200px" width="400px"/>
+</p>
+
+---
+
+### Progress Tracking
+
+#### Mark Exercises as Complete
+- Registered users can check off exercises as they complete them
+- Checkboxes provide instant visual feedback
+- Completion status is saved to database immediately
+
+#### Stored Per User
+- Each user has their own progress tracking
+- Progress data persists across sessions
+- Users can see their completed workouts history
+
+#### Dynamic Updates
+- Progress updates without page refresh (AJAX)
+- Dashboard shows real-time completion percentage
+- Visual indicators show progress at a glance
+
+<p align="center">
+    <img src="readme-images/features/progress.png" alt="Progress tracking dashboard showing completion percentage" height="200px" width="450px"/>
+</p>
+
+---
+
+### Authentication System (Django Allauth)
+
+#### Registration and Login
+- Users can create accounts with email and password
+- Registration form validates input and creates user profile automatically
+- Login form with remember me option
+- Password reset functionality via email
+
+<p align="center">
+    <img src="readme-images/features/register_page.png" alt="Login page" height="250px" width="400px"/>
+    <img src="readme-images/features/login_page.png" alt="Registration page" height="250px" width="400px"/>
+</p>
+
+#### Email Verification
+- New users receive verification email upon registration
+- Accounts must verify email before accessing premium features
+- Verification links expire for security
+
+#### Secure Account Management
+- Users can update profile information
+- Change password functionality
+- Secure session management
+- Logout option available from navigation
+
+---
+
+### Payments app
+
+#### Premium Access Purchase
+- Users can purchase monthly premium subscription for €19.99
+- Premium checkout page displays plan details and benefits
+- One-click payment via Stripe
+
+<p align="center">
+    <img src="readme-images/features/premium-checkout.png" alt="Premium checkout page with Stripe" height="250px" width="450px"/>
+</p>
+
+#### Secure Checkout
+- Stripe handles all payment processing (PCI compliant)
+- Users never enter payment details on FitHub servers
+- Test mode available for development
+
+#### Payment Validation
+- Payment success redirects to confirmation page
+- Premium status activated immediately after successful payment
+- Admin can manually manage premium status via admin panel
+
+<p align="center">
+    <img src="readme-images/features/payment-success.png" alt="Payment success confirmation page" height="200px" width="450px"/>
+</p>
+
+---
+
+### Shop app
+
+#### Browse Products
+- All products displayed in responsive grid layout
+- Each product shows: image, name, price, and stock status
+- Low stock warning appears when inventory is low (<10 units)
+- Out of stock products are clearly marked
+
+<p align="center">
+    <img src="readme-images/features/shop_page.png" alt="Shop page showing fitness products" height="250px" width="500px"/>
+</p>
+
+#### Product Details
+- Click any product to view detailed information
+- Page shows: full description, price, stock availability
+- Quantity selector with stock limit validation
+- Add to cart button with visual feedback
+
+<p align="center">
+    <img src="readme-images/features/product-detail.png" alt="Product detail page with quantity selector" height="300px" width="450px"/>
+</p>
+
+#### Shopping Cart
+- Add/remove products from cart
+- Update quantities with +/- buttons (AJAX)
+- Real-time total price calculation
+- Cart persists in session for guest users
+- Stock validation prevents over-purchasing
+
+<p align="center">
+    <img src="readme-images/features/cart_page_withitem.png" alt="Shopping cart page with quantity controls" height="250px" width="500px"/>
+</p>
+
+#### Checkout Process
+- Delivery address collection before payment
+- Form includes: name, email, phone, address, city, postal code, country
+- Order summary shows all items and total
+- Login required before checkout
+
+<p align="center">
+    <img src="readme-images/features/checkout-form.png" alt="Checkout delivery form" height="300px" width="450px"/>
+</p>
+
+#### Order Confirmation
+- Users receive order confirmation on success page
+- Order details saved to database
+- Admin can view all orders in admin panel
+- Stock automatically reduced after purchase
+
+<p align="center">
+    <img src="readme-images/features/order-success.png" alt="Order confirmation page" height="200px" width="450px"/>
+</p>
+
+---
+
+### Profile app
+
+#### User Profiles
+- Each registered user has a dedicated profile page
+- Profile displays: username, bio, profile image, premium status
+- Users can upload profile picture
+- Bio text area for personal description
+
+<p align="center">
+    <img src="readme-images/features/profile_page_logedin.png" alt="User profile page" height="250px" width="450px"/>
+</p>
+
+#### Premium Status Tracking
+- Profile clearly shows if user has premium access
+- Premium badge displayed for subscribers
+- Upgrade button shown for non-premium users
+- Premium status unlocks premium workout content
+
+#### Edit Profile
+- Users can update their bio and profile image
+- Form validates image uploads
+- Changes reflect immediately on profile page
+
+<p align="center">
+    <img src="readme-images/features/edit-profile.png" alt="Edit profile form" height="250px" width="400px"/>
+</p>
+
+---
+
+### Admin Management
+
+#### Product Management
+- Admin can add, edit, and delete products via Django admin
+- Stock levels can be updated from product list
+- Low stock warning column highlights products needing restock
+- Product images upload to AWS S3
+
+#### Order Management
+- View all customer orders with details
+- Filter orders by paid status and date
+- See which products were ordered
+- Customer delivery addresses visible
+
+#### Premium User Management
+- View all users and their premium status
+- Manually grant or revoke premium access
+- Filter users by premium status
+- Search users by username or email
+
+#### Delivery Address Management
+- View all customer delivery addresses
+- Addresses include full name, phone, and complete address
+- Created timestamp for reference
+- Search deliveries by customer name or city
+
+<p align="center">
+    <img src="readme-images/features/admin-panel.png" alt="Django admin panel showing orders and products" height="250px" width="500px"/>
+</p>
+
+---
+
+### Pages app
+
+#### About Page
+- Learn about FitHub platform
+- Describes services offered: workouts, shop, premium content
+- Subscription benefits explained
+- Responsive and readable on all devices
+
+<p align="center">
+    <img src="readme-images/features/about_page.png" alt="About page" height="200px" width="450px"/>
+</p>
+
+#### Contact Form
+- Users can send messages to site owner
+- Form fields: name, email, message
+- Email notification sent to admin via Gmail SMTP
+- Success message displayed on submission
+
+<p align="center">
+    <img src="readme-images/features/contact_page.png" alt="Contact form page" height="250px" width="450px"/>
+</p>
+---
