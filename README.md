@@ -906,3 +906,8 @@ The platform uses **Font Awesome 6** icons extensively throughout the interface 
     <img src="readme-images/features/contact_page.png" alt="Contact form page" height="250px" width="450px"/>
 </p>
 ---
+## Testing
+
+- #### Testing.
+  - The testing section for this site is located at the following link.
+    - [Testing file](TESTING.md)
