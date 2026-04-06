@@ -239,7 +239,7 @@ As an admin, I want to see all customer orders, So that I can process and fulfil
 - Relationships: Belongs to One User (ForeignKey)
 - Features: Full address property method for formatted addresses
 
-#### Shop & E-commerce
+#### Shop 
 
 **Product** (shop/models.py)
 - Fields: name, description, price, image, stock
