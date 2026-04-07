@@ -404,5 +404,44 @@ So that my purchased items can be shipped to me.
 - Admin can click into individual orders to view detailed information.
 <p float="left"><img src="readme-images/testing/order_detail.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
 
-
 ---
+
+## Unit Testing 
+- Each app was tested using Django unit testing.
+
+- Tests were written to test the URLs, Models, Forms, and the Views.
+
+- To run the tests in the terminal you can type the following command:
+
+        
+            python3 manage.py test
+        
+
+- To show how much of the app has been covered by the testing I used coverage.
+
+- To use coverage first run:
+
+        pip install coverage
+
+- Then run to test the whole app:
+
+        coverage run --source=abode manage.py test 
+      
+- Coverage generates a report to show how much of the code has been tested and how much is yet to be tested:
+
+
+        coverage report
+
+You can then run coverage HTML to show the report on the screen:
+
+        coverage html
+      
+
+- To open the report you can run 
+    
+            python3 -m http.server
+      
+- I've included the reports for each app below.
+
+<div float="left"><img src="readme-images/testing/coverage1.png" alt="Coverage report overview showing total coverage percentage" height="500px" width="400px"/></div> <div float="left"><img src="readme-images/testing/coverage2.png" alt="Detailed coverage report showing coverage per app" height="400px" width="400px"/></div> 
+      
