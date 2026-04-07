@@ -444,4 +444,48 @@ You can then run coverage HTML to show the report on the screen:
 - I've included the reports for each app below.
 
 <div float="left"><img src="readme-images/testing/coverage1.png" alt="Coverage report overview showing total coverage percentage" height="500px" width="400px"/></div> <div float="left"><img src="readme-images/testing/coverage2.png" alt="Detailed coverage report showing coverage per app" height="400px" width="400px"/></div> 
-      
+    
+## Test and Bugs During Development
+
+#### UnboundLocalError with completion_percent in Workout Detail View
+
+- During development, I encountered an UnboundLocalError when testing the workout detail page.
+
+The error occurred when a non-authenticated user (guest) tried to view a workout plan, or when a workout had no exercises.
+
+The fix was to add completion_percent = 0 at the start of the workout_detail view function.
+
+        Before 
+        'completion_percent': completion_percent  
+
+        After 
+        completion_percent = 0 
+
+#### CSRF Token Issues with JavaScript (AJAX)
+While implementing AJAX for workout progress updates, POST requests initially failed.
+The issue was due to missing CSRF token in fetch requests.
+
+Fix:
+
+Included CSRF token in headers:
+
+    fetch("/update-progress/", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrfToken,
+        },
+        body: formData
+    })
+
+#### Workout Detail View Error (NameError)
+During development, I encountered an error when accessing the workout detail page:
+
+        NameError: name 'workout' is not defined
+
+The issue was caused by not properly passing the workout object into the template context.
+Fix:
+Ensured the workout variable was correctly defined in the view:
+
+    workout = get_object_or_404(WorkoutPlan, id=workout_id)
+
+
