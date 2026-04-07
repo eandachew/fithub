@@ -26,7 +26,7 @@ Fithub is a dynamic fitness web application built with Django, PostgreSQL, and m
 ### Home page screenshot. 
 
  <div align="center">
-    <img src="docs/images/homepage.png" alt="image of the homepage">
+    <img src="docs/images/home_page.png" alt="image of the homepage">
 </div>
 
  

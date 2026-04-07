@@ -21,6 +21,7 @@ def workout_list(request):
 def workout_detail(request, workout_id):
     """View workout details with premium access control"""
     workout = get_object_or_404(WorkoutPlan, id=workout_id)
+    completion_percent = 0
 
     # Check premium access
     has_premium = False
