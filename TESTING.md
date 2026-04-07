@@ -488,4 +488,294 @@ Ensured the workout variable was correctly defined in the view:
 
     workout = get_object_or_404(WorkoutPlan, id=workout_id)
 
+## Manual Testing
+
+All functionality of the website was also tested manually to ensure it all worked correctly.
+
+### Workout Functionality
+
+- To test the workout functionality I first navigated to the workouts page.
+- I viewed the list of available workouts including both free and premium options.
+
+<p float="left">
+  <img src="readme-images/testing/workouts_page_testing .png" alt="Workouts listing page showing free and premium workouts" height="280px" width="400px"/>
+</p>
+
+- I then clicked on a free workout to view the detailed workout plan.
+- The page displayed the workout title, description, difficulty level, duration, and list of exercises.
+
+<p float="left">
+  <img src="readme-images/testing/free_workout.png" alt="Free workout detail page showing exercises" height="300px" width="400px"/>
+</p>
+
+- I tested the exercise progress tracking by marking exercises as completed.
+- The completion percentage updated dynamically to show my progress.
+
+<p float="left">
+  <img src="readme-images/testing/workou_completed.png" alt="Workout progress showing completion percentage" height="250px" width="400px"/>
+</p>
+
+- When the page reloaded it changes to 100 percent 
+<img src="readme-images/testing/workout_reloaded.png" alt="Workout progress reloaded" height="250px" width="400px"/>
+</p>
+
+
+### Premium Workout Access
+
+- To test premium workout restrictions I first logged out of my account.
+- I attempted to click on a premium workout card.
+- The page redirected me to the login page with a message: "Please login to access premium workouts."
+
+<p float="left">
+  <img src="readme-images/testing/premium-redirect.png" alt="Premium workout redirect to login" height="200px" width="400px"/>
+</p>
+
+- I then logged in as a free user (non-premium subscriber) and tried to access a premium workout.
+- The page showed a locked message: "You must purchase premium access to view this workout."
+- A button appeared linking to the premium checkout page.
+
+<p float="left">
+  <img src="readme-images/testing/Premium workout locked.png" alt="Premium workout locked message for free users" height="250px" width="400px"/>
+</p>
+
+### Subscribe to Premium Plan
+
+- To test the premium subscription functionality I first logged into my account.
+- I navigated to the premium checkout page using the "Go Premium Today!" button on the homepage.
+
+<p float="left">
+  <img src="readme-images/testing/go_premium.png" alt="Premium checkout page showing plan details and price" height="300px" width="400px"/>
+</p>
+
+- I filled in the payment details using Stripe's test card number: `4242 4242 4242 4242`
+- I entered any future expiration date, any CVC, and any postal code.
+
+<p float="left">
+  <img src="readme-images/testing/stripe-payment.png" alt="Stripe payment form with test card" height="320px" width="400px"/>
+</p>
+
+- After successful payment, I was redirected to a success page.
+- I verified that my account now had premium access by checking my profile.
+
+<p float="left">
+  <img src="readme-images/testing/payment-success.png" alt="Premium subscription success message" height="200px" width="400px"/>
+</p>
+
+- I then tested accessing a premium workout again and could now view all exercises without any locked message.
+
+<p float="left">
+  <img src="readme-images/testing/advanced_workout.png" alt="Premium workout unlocked for premium user" height="280px" width="400px"/>
+</p>
+
+### Shop Product Browsing
+
+- To test the shop functionality I first navigated to the shop page from the navigation bar.
+- All products displayed in a responsive grid layout showing image, name, price, and stock status.
+
+<p float="left">
+  <img src="readme-images/testing/product.png" alt="Shop page showing product grid" height="280px" width="400px"/>
+</p>
+
+- I clicked on a product to view its detailed information.
+- The product detail page showed full description, price, stock status, and an "Add to Cart" button.
+
+<p float="left">
+  <img src="readme-images/testing/product-detail.png" alt="Product detail page" height="350px" width="400px"/>
+</p>
+
+### Cart Functionality
+
+- To test the cart functionality I first added an item to the cart using the "Add to Cart" button.
+
+<p float="left">
+  <img src="readme-images/testing/add button.png" alt="Add to cart test" height="200px" width="400px"/>
+</p>
+
+- I then navigated to the cart page to view my items.
+- The cart displayed the product name, quantity, price, and subtotal.
+
+<p float="left">
+  <img src="readme-images/testing/cart-page.png" alt="Cart page showing added items" height="250px" width="400px"/>
+</p>
+
+- I tested updating the quantity by changing the number in the quantity field.
+- The cart total updated automatically.
+
+<p float="left">
+  <img src="readme-images/testing/total_change.png" alt="Cart update quantity test" height="250px" width="400px"/>
+</p>
+
+- I then removed an item from the cart using the remove button.
+- The item was successfully removed and the cart updated.
+
+<p float="left">
+  <img src="readme-images/testing/cart-remove.png" alt="Remove from cart test" height="200px" width="400px"/>
+</p>
+
+### Checkout Functionality
+
+- To test the checkout functionality I first added an item to my cart and navigated to the checkout page.
+- I filled in the delivery information form including name, email, phone, address, city, postal code, and country.
+
+<p float="left">
+  <img src="readme-images/testing/Checkout delivery.png" alt="Checkout delivery form" height="350px" width="400px"/>
+</p>
+
+- I entered the Stripe test card number `4242 4242 4242 4242` for payment.
+- I submitted the order and received an order confirmation page.
+
+<p float="left">
+  <img src="readme-images/testing/payment_made.png" alt="Order confirmation page" height="300px" width="400px"/>
+</p>
+
+- I logged into Stripe dashboard to verify the payment intent succeeded.
+
+<p float="left">
+  <img src="readme-images/testing/stripe_verfication.png" alt="Stripe payment verification" height="200px" width="450px"/>
+</p>
+
+- Finally, I checked the Django admin panel to ensure the order had been saved correctly.
+
+<p float="left">
+  <img src="readme-images/testing/order on admin.png" alt="Order in admin panel" height="220px" width="450px"/>
+</p>
+
+### User Account Functionality
+
+- To test user registration I navigated to the sign-up page.
+- I filled in the registration form with username, email, and password.
+
+<p float="left">
+  <img src="readme-images/testing/registar-page.png" alt="User registration form" height="320px" width="400px"/>
+</p>
+
+- After submitting, I was redirected to the homepage and logged in automatically.
+- I tested the login functionality by logging out and logging back in with my credentials.
+
+<p float="left">
+  <img src="readme-images/testing/logedin.png" alt="Login form" height="280px" width="400px"/>
+</p>
+
+- I tested invalid credentials and received an error message.
+
+<p float="left">
+  <img src="readme-images/testing/invalid_input.png" alt="Login error message" height="150px" width="400px"/>
+</p>
+
+### Profile Management
+
+- To test profile functionality I first logged into my account.
+- I navigated to my profile page using the profile link in the navigation bar.
+
+<p float="left">
+  <img src="readme-images/testing/profile_page_logedin.png" alt="Profile page" height="300px" width="400px"/>
+</p>
+
+- I tested updating my profile picture and bio.
+- I clicked save and verified the changes reflected immediately.
+
+<p float="left">
+  <img src="readme-images/testing/profile_update.png" alt="Profile update test" height="250px" width="400px"/>
+</p>
+
+### Dashboard and Progress Tracking
+
+- I navigated to my dashboard to view my fitness progress.
+- The dashboard displayed:
+    - Completed workouts count
+    - Completion percentage with progress bar
+
+
+<p float="left">
+  <img src="readme-images/testing/workout_withexercise and progress.png" alt="User dashboard showing progress" height="350px" width="400px"/>
+</p>
+
+### Contact Form
+
+- To test the contact form I navigated to the contact page,
+- I filled in the form with my name, email address, and message.
+
+<p float="left">
+  <img src="readme-images/testing/contact_form.png" alt="Contact form" height="350px" width="400px"/>
+</p>
+
+- I submitted the form and received a success message.
+- I then logged into the admin panel to verify the contact message had been received.
+
+<p float="left">
+  <img src="readme-images/testing/submission display.png" alt="Contact message in admin" height="220px" width="450px"/>
+</p>
+
+### About Page
+
+- I tested the about page by clicking the "About" link in the navigation.
+- The page loaded correctly and displayed information about FitHub's purpose, services, and subscription benefits.
+
+<p float="left">
+  <img src="readme-images/testing/about_page.png" alt="About page" height="300px" width="400px"/>
+</p>
+
+### Admin Product Management
+
+- To test admin product management I first logged into the Django admin panel as a superuser.
+- I navigated to the Products section under the Shop app.
+
+<p float="left">
+  <img src="readme-images/testing/products list.png" alt="Admin products list" height="250px" width="450px"/>
+</p>
+
+- I tested creating a new product with name, description, price, image, and stock quantity.
+
+<p float="left">
+  <img src="readme-images/testing/newproduct .png" alt="Add product in admin" height="350px" width="450px"/>
+</p>
+
+
+- Finally, I tested deleting a product from the admin panel.
+
+<p float="left">
+  <img src="readme-images/testing/products list.png" alt="Delete product confirmation" height="220px" width="450px"/>
+</p>
+
+### Admin Workout Management
+
+- To test admin workout management I logged into the Django admin panel.
+- I navigated to the Workout Plans section under the Workouts app.
+
+<p float="left">
+  <img src="readme-images/testing/workout_plan.png" alt="Admin workouts list" height="250px" width="450px"/>
+</p>
+
+- I tested creating a new workout plan with title, description, difficulty, duration, and premium status.
+- I also added exercises to the workout including name, sets, reps, and rest time.
+
+<p float="left">
+  <img src="readme-images/testing/newworkout.png" alt="Add workout in admin" height="350px" width="450px"/>
+</p>
+
+- I tested editing an existing workout and its exercises.
+- I verified the changes appeared immediately on the live site.
+
+<p float="left">
+  <img src="readme-images/testing/live_new_workout.png" alt="Edit workout in admin" height="350px" width="450px"/>
+</p>
+- I delete it after verfication.
+<img src="readme-images/testing/workout_plan.png" alt="delete new exercise" height="350px" width="450px"/>
+
+
+### Admin Order Management
+
+- To test admin order management I logged into the Django admin panel.
+- I navigated to the Orders section to view all customer orders.
+- Each order showed the order number, customer name, total amount, date, and status.
+
+<p float="left">
+  <img src="readme-images/testing/order_admin.png" alt="Admin orders list" height="250px" width="450px"/>
+</p>
+
+- I clicked into an order to view the detailed information including which products were purchased.
+
+<p float="left">
+  <img src="readme-images/testing/order_detail.png" alt="Order detail in admin" height="300px" width="450px"/>
+</p>
 
