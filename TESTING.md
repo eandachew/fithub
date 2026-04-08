@@ -803,3 +803,12 @@ All functionality of the website was also tested manually to ensure it all worke
      - <div float="left">
         <img src="readme-images/testing/html_validation.png" alt="Image of pep8 results" width="500px" height="280px" />
         </div>
+- #### Python
+
+     - My python was passed through a pep8 validating tool to validate it and it all passed.
+     - Used Flake8 with custom `.flake8` configuration to ensure PEP8 compliance.
+     - Excludes virtual environment, migrations, and settings files.
+
+     - <div float="left">
+        <img src="readme-images/testing/flake8.png" alt="Image of pep8 results" width="500px" height="280px" />
+        </div>

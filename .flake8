@@ -1,0 +1,10 @@
+[flake8]
+exclude = 
+    .venv,
+    .git,
+    __pycache__,
+    migrations,
+    env.py,
+    custom_storages.py,
+    fithub/settings.py
+max-line-length = 100

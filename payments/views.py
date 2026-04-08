@@ -16,10 +16,10 @@ def shop_checkout(request):
 
         try:
             return redirect("account_login")
-        except:
+        except Exception:
             try:
                 return redirect("login")
-            except:
+            except Exception:
                 return redirect("/accounts/login/")
 
     # Get cart from session
@@ -60,7 +60,7 @@ def shop_checkout(request):
                         "product_data": {
                             "name": product.name,
                         },
-                        "unit_amount": int(product.price * 100),  
+                        "unit_amount": int(product.price * 100),
                     },
                     "quantity": quantity,
                 }

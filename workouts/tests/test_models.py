@@ -85,7 +85,7 @@ class ExerciseProgressModelTest(TestCase):
         self.assertEqual(self.progress.user.username, "testuser")
         self.assertEqual(self.progress.exercise.name, "Squats")
         self.assertFalse(self.progress.completed)
-        self.assertEqual(str(self.progress), f"testuser - Squats - False")
+        self.assertEqual(str(self.progress), "testuser - Squats - False")
 
     def test_exercise_progress_can_be_marked_complete(self):
         """Test exercise progress can be updated to completed"""
