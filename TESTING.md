@@ -778,4 +778,3 @@ All functionality of the website was also tested manually to ensure it all worke
 <p float="left">
   <img src="readme-images/testing/order_detail.png" alt="Order detail in admin" height="300px" width="450px"/>
 </p>
-
