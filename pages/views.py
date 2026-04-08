@@ -5,14 +5,17 @@ from django.contrib import messages
 
 # Create your views here.
 from django.shortcuts import render
+
+
 def about(request):
-    return render(request, 'pages/about.html')
+    return render(request, "pages/about.html")
+
 
 def contact(request):
     if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
 
         full_message = f"Message from {name} ({email}):\n\n{message}"
 
@@ -24,6 +27,6 @@ def contact(request):
         )
 
         messages.success(request, "Your message has been sent successfully!")
-        return redirect('contact')
+        return redirect("contact")
 
-    return render(request, 'pages/contact.html')
+    return render(request, "pages/contact.html")

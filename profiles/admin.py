@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import UserProfile
-from .models import UserProfile, Delivery 
+from .models import UserProfile, Delivery
 
 # Register your models here.
 

@@ -778,3 +778,28 @@ All functionality of the website was also tested manually to ensure it all worke
 <p float="left">
   <img src="readme-images/testing/order_detail.png" alt="Order detail in admin" height="300px" width="450px"/>
 </p>
+
+## Validators
+
+- #### CSS
+    - I passed my CSS through the CSS code validator and it has passesd.
+
+        - <div float="left">
+            <img src="readme-images/testing/css_validation.png" alt="Image of css report" width="500px" height="380px" />
+        </div>
+
+- #### Javascript
+
+     - My javascript was passed thorough jshint.
+
+     - <div float="left">
+        <img src="readme-images/testing/jshint.png" alt="Image of jshint" width="500px" height="180px" />
+        </div>
+
+- #### Html
+
+     - My Html code was passed through the W3C Markup Validation Service and there are no errors showing.
+
+     - <div float="left">
+        <img src="readme-images/testing/html_validation.png" alt="Image of pep8 results" width="500px" height="280px" />
+        </div>
