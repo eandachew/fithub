@@ -812,3 +812,23 @@ All functionality of the website was also tested manually to ensure it all worke
      - <div float="left">
         <img src="readme-images/testing/flake8.png" alt="Image of pep8 results" width="500px" height="280px" />
         </div>
+## Responsiveness and Browsers
+
+- I have tested the site Responsivenessacross Google chrome dev tools. 
+- I have also used the application across different screen sizes.
+- The app has also been used on different browsers to check its compatibility
+    - Google chrome.
+    - Safari
+    - Opera
+    - Microsoft edge
+    - Firefox.
+## Accessibility
+
+- The site has been tested for Accessibility using google lighthouse and the Accessibility insights chrome extension.
+- When testing I made several changes to heading elements to improve the Accessibility.
+- I have also ensured that all images have alt text attributes.
+- Upon testing in lighthouse, I have received scores of 95% to 100% across the site.
+
+- <div float="left">
+        <img src="readme-images/testing/lighthouse_result.png" alt="Lighthouse result" width="500px" height="280px" />
+        </div>
