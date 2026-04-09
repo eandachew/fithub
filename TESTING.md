@@ -1,13 +1,46 @@
 # Testing
 ## Table of contents.
 
+- [User Stories.](#user-stories)
+- [Unit Testing](#unit-testing)
+- [Test and Bugs During Development](#test-and-bugs-during-development)
+    + [UnboundLocalError with completion_percent in Workout Detail View](#unboundlocalerror-with-completion_percent-in-workout-detail-view)
+    + [CSRF Token Issues with JavaScript (AJAX)](#csrf-token-issues-with-javascript-ajax)
+    + [Workout Detail View Error (NameError)](#workout-detail-view-error-nameerror)
+- [Defensive Programming and Security](#defensive-programming-and-security)
+  * [Security](#security)
+  * [Defensive Programming.](#defensive-programming)
+- [Manual Testing](#manual-testing)
+    + [Workout Functionality](#workout-functionality)
+    + [Premium Workout Access](#premium-workout-access)
+    + [Subscribe to Premium Plan](#subscribe-to-premium-plan)
+    + [Reviews Functionality.](#reviews-functionality)
+    + [Shop Product Browsing](#shop-product-browsing)
+    + [Cart Functionality](#cart-functionality)
+    + [Checkout Functionality](#checkout-functionality)
+    + [User Account Functionality](#user-account-functionality)
+    + [Profile Management](#profile-management)
+    + [Dashboard and Progress Tracking](#dashboard-and-progress-tracking)
+    + [Contact Form](#contact-form)
+    + [About Page](#about-page)
+    + [Admin Product Management](#admin-product-management)
+    + [Admin Workout Management](#admin-workout-management)
+    + [Admin Order Management](#admin-order-management)
+- [Validators](#validators)
+    + [CSS](#css)
+    + [Javascript](#javascript)
+    + [Html](#html)
+    + [Python](#python)
+- [Responsiveness and Browsers](#responsiveness-and-browsers)
+- [Accessibility](#accessibility)
+
 ## User Stories.
 - As a visitor, I want to view a detailed workout plan, So that I can understand the exercises included.
  
 **Acceptance Criteria** 
 - Acceptance criteria 1: Clicking a workout plan opens the full plan page.
  
- <p float="left"><img src="readme-images/testing/workouts_page.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+ <p float="left"><img src="readme-images/testing/workouts_page.png" alt="Work out page" height="200px" width="400px"/></p>
 
 - Acceptance criteria 2: The page displays:
 
@@ -19,10 +52,10 @@
 
     -list of exercises
 
-<p float="left"><img src="readme-images/testing/workout_withexercise and progress.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/workout_withexercise and progress.png" alt="workout detail" height="200px" width="400px"/></p>
 - Acceptance criteria 3: Premium workouts show a locked message for non-subscribers.
 
- <p float="left"><img src="readme-images/testing/Premium workout.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+ <p float="left"><img src="readme-images/testing/Premium workout.png" alt="Premium workouts" height="200px" width="400px"/></p>
 
 - The website has numerous references to fitness and exercise throughout (hero section, features section, premium offerings).
 
@@ -49,17 +82,17 @@
 
 The website clearly labels which workouts are Premium vs Free throughout the workouts listing page.
 
-<p float="left"><img src="readme-images/testing/workouts_page_testing .png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/workouts_page_testing .png" alt="Free and premium workouts" height="200px" width="400px"/></p>
 
 Premium workout cards display a crown icon or "Premium" badge to indicate restricted content.
 
 Non-subscribed users who click on a premium workout see a subscription prompt with a link to upgrade.
 
-<p float="left"><img src="readme-images/testing/Premium Subscription.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/Premium Subscription.png" alt="Subscription prompt" height="200px" width="400px"/></p>
 
 Subscribed users can view full premium workout details without any restrictions or locked messages.
 
-<p float="left"><img src="readme-images/testing/advanced_workout.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/advanced_workout.png" alt="Premium workout" height="200px" width="400px"/></p>
 
 The backend verifies subscription status on every premium workout request to prevent URL guessing or direct access bypass.
 
@@ -76,21 +109,21 @@ The backend verifies subscription status on every premium workout request to pre
 
 - The subscription page clearly displays plan features (unlimited workouts, progress tracking, exclusive content) alongside the €19.99/month price.
 
-<p float="left"><img src="readme-images/testing/Premium Subscription.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/Premium Subscription.png" alt="Subscription page" height="200px" width="400px"/></p>
 
 - Users are redirected to Stripe's secure checkout page for payment processing.
 
-<p float="left"><img src="readme-images/testing/premium-checkout.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/premium-checkout.png" alt="Payment processing" height="200px" width="400px"/></p>
 
 - Successful payment automatically activates the user's premium subscription status in the database.
 
-<p float="left"><img src="readme-images/testing/payment-success.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/payment-success.png" alt="payment success" height="200px" width="400px"/></p>
 
 - Once subscribed, premium workout plans become immediately accessible without requiring re-login.
 
 - The home page features a "Go Premium Today!" call-to-action section for non-premium users.
 
-<p float="left"><img src="readme-images/testing/go_premium.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/go_premium.png" alt="Go premium" height="200px" width="400px"/></p>
 
 ---
 - As a registered user, I want to mark workouts as completed, So that I can track my fitness progress. 
@@ -102,14 +135,14 @@ The backend verifies subscription status on every premium workout request to pre
  
  - Each exercise within a workout plan has a checkbox or "Mark Complete" button next to it.
 
-<p float="left"><img src="readme-images/testing/checkbox.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/checkbox.png" alt="Checkbox" height="200px" width="400px"/></p>
 
 - Users can mark individual exercises or the entire workout as completed with one click.
 
 - Completion status is saved to the database and persists across browser sessions.
 
 - The user dashboard displays overall progress including completed workouts and completion percentage.
-<p float="left"><img src="readme-images/testing/workout_percentage.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/workout_percentage.png" alt="Progress percentage" height="200px" width="400px"/></p>
 
 ---
 - As a registered user, I want to log into my account, So that I can access my profile, workouts, and purchases.
@@ -122,18 +155,18 @@ The backend verifies subscription status on every premium workout request to pre
 
 
 - The login form is accessible via a "Login" link in the main navigation bar.
-<p float="left"><img src="readme-images/testing/login_navigation.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/login_navigation.png" alt="log in" height="200px" width="400px"/></p>
 
 - Correct email/username and password credentials successfully log the user into their account.
-<p float="left"><img src="readme-images/testing/correct_login.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/correct_login.png" alt="log in successfully" height="200px" width="400px"/></p>
 
 - Invalid credentials display a clear error message (e.g., "Invalid username or password").
 
-<p float="left"><img src="readme-images/testing/incorrect _login.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/incorrect _login.png" alt="error image" height="200px" width="400px"/></p>
 - After successful login, users are redirected to their dashboard or back to the page they were viewing.
 
 - The navigation bar updates to show the logged-in user's name and a logout option.
-<p float="left"><img src="readme-images/testing/logout_option.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/logout_option.png" alt="log in option" height="200px" width="400px"/></p>
 
 ---
 
@@ -153,11 +186,11 @@ As a registered user, I want to see my workout progress, So that I can monitor m
 
 - The user dashboard displays completed workouts count and total available workouts.
 
-<p float="left"><img src="readme-images/testing/completed_workout.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/completed_workout.png" alt="completed workout" height="200px" width="400px"/></p>
 
 - A visual progress bar or percentage indicator shows overall completion rate.
 
-<p float="left"><img src="readme-images/testing/workout_percentage.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/workout_percentage.png" alt="completion percentage" height="200px" width="400px"/></p>
 ---
 
 - As a visitor, I can register for an account, so that I can track my fitness progress and access premium content. 
@@ -170,20 +203,20 @@ As a registered user, I want to see my workout progress, So that I can monitor m
 
 - The registration form is accessible via a  "Register" link in the main navigation.
 
-<p float="left"><img src="readme-images/testing/navigation_registor.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/navigation_registor.png" alt="Registration nav" height="200px" width="400px"/></p>
 
 - Valid registration details (username, email, password) create a new user account in the system.
 
-<p float="left"><img src="readme-images/testing/register_page.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/register_page.png" alt="validation" height="200px" width="400px"/></p>
 
 - user will be asked for confirmation email.
 
-<p float="left"><img src="readme-images/testing/confirmation_email.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/confirmation_email.png" alt="email confirmation" height="200px" width="400px"/></p>
 
 - The registration form includes validation for password strength and matching confirmation.
-<p float="left"><img src="readme-images/testing/signup_validation.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/signup_validation.png" alt="signup validation" height="200px" width="400px"/></p>
 - Users are redirected to the homepage or dashboard after successful registration.
-<p float="left"><img src="readme-images/testing/successful login.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/successful login.png" alt="home page " height="200px" width="400px"/></p>
 
 ---
  
@@ -201,15 +234,15 @@ As a visitor, I want to contact the platform owner, so that I can ask questions 
 
 
 - The contact form is accessible "Contact" page link.
-<p float="left"><img src="readme-images/testing/contact_page.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/contact_page.png" alt="contact page" height="200px" width="400px"/></p>
 
 - The form includes required fields: Name, Email Address, and Message.
 
 - Successful form submission displays a confirmation message (e.g., "Your message has been sent successfully!").
-<p float="left"><img src="readme-images/testing/submission display.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/submission display.png" alt="message sent" height="200px" width="400px"/></p>
 
 - Email address field validates proper email format before submission.
-<p float="left"><img src="readme-images/testing/proper email.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/proper email.png" alt="proper email" height="200px" width="400px"/></p>
 
 ---
 
@@ -229,20 +262,20 @@ As a visitor, I want to contact the platform owner, so that I can ask questions 
 
 
 - The About page is accessible from the main navigation links.
-<p float="left"><img src="readme-images/testing/navigation.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/navigation.png" alt="About page nav" height="200px" width="400px"/></p>
 
 - The page clearly describes FitHub's platform purpose (fitness tracking and workout plans).
-<p float="left"><img src="readme-images/testing/about_page.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/about_page.png" alt="purpose" height="200px" width="400px"/></p>
 
 - The page is fully responsive and readable on mobile, tablet, and desktop devices.
 - mobile 
- <p float="left"><img src="readme-images/testing/mobile_phone.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+ <p float="left"><img src="readme-images/testing/mobile_phone.png" alt="responsive" height="200px" width="400px"/></p>
 
  - Tablet
- <p float="left"><img src="readme-images/testing/tablet.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+ <p float="left"><img src="readme-images/testing/tablet.png" alt="tablet responsive" height="200px" width="400px"/></p>
 
  - Desktop 
- <p float="left"><img src="readme-images/testing/about_page.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+ <p float="left"><img src="readme-images/testing/about_page.png" alt="desktop responsive" height="200px" width="400px"/></p>
 
 --- 
 
@@ -263,13 +296,13 @@ As a visitor, I want to contact the platform owner, so that I can ask questions 
 
 
 - Users can access their profile page from the navigation bar after logging in.
-<p float="left"><img src="readme-images/testing/profile_page_logedin.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/profile_page_logedin.png" alt="profile page" height="200px" width="400px"/></p>
 
 - Users can edit their bio/fitness bio (e.g., fitness goals, experience level).
-<p float="left"><img src="readme-images/testing/edit-profile.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/edit-profile.png" alt="edit profile" height="200px" width="400px"/></p>
 
 - Changes are saved to the database when the user clicks "Save" or "Update Profile".
-<p float="left"><img src="readme-images/testing/profile_update.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/profile_update.png" alt="profile update" height="200px" width="400px"/></p>
 
 
 ---
@@ -286,14 +319,14 @@ As a visitor, I want to contact the platform owner, so that I can ask questions 
 
 
 - The admin has access to Django Admin panel or a custom admin dashboard.
-<p float="left"><img src="readme-images/testing/admin-panel.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/admin-panel.png" alt="Django Admin panel" height="200px" width="400px"/></p>
 
 - Admin can create new products with fields: name, description, price, image, and stock quantity.
-<p float="left"><img src="readme-images/testing/admin_newproduct.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/admin_newproduct.png" alt="new product admin" height="200px" width="400px"/></p>
 
 
 - Admin can delete or archive products that are no longer for sale.
-<p float="left"><img src="readme-images/testing/admin_delete.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/admin_delete.png" alt="Admin archive control" height="200px" width="400px"/></p>
 
 ---
 
@@ -307,10 +340,10 @@ As a visitor, I want to contact the platform owner, so that I can ask questions 
 Admin can manage all workout plans through the Django Admin interface.
 
 Admin can create new workout plans with title, difficulty, description, and premium status.
-<p float="left"><img src="readme-images/testing/workout plans.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/workout plans.png" alt="admin new workout plans" height="200px" width="400px"/></p>
 
 Changes made in Django Admin reflect immediately on the live site.
-<p float="left"><img src="readme-images/testing/workout_live.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/workout_live.png" alt="immediate change on live site" height="200px" width="400px"/></p>
 
 ---
 
@@ -324,15 +357,15 @@ Changes made in Django Admin reflect immediately on the live site.
 - Acceptance criteria 4: Users can click on products to view details
 
 - The Shop page is accessible from the main navigation bar alongside Workouts and Home links.
-<p float="left"><img src="readme-images/testing/navigation.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/navigation.png" alt="shop on navbar" height="200px" width="400px"/></p>
 
-<p float="left"><img src="readme-images/testing/home_page.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/home_page.png" alt="home page nav" height="200px" width="400px"/></p>
 
 - All available products are displayed in a responsive grid layout and shows the product image, name, price, and stock status
-<p float="left"><img src="readme-images/testing/product.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/product.png" alt="avilable product" height="200px" width="400px"/></p>
 
 - Users can click on any product card to view detailed product information.
-<p float="left"><img src="readme-images/testing/product-detail.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/product-detail.png" alt="detail of product" height="200px" width="400px"/></p>
 
 
 ---
@@ -347,16 +380,16 @@ Changes made in Django Admin reflect immediately on the live site.
 
 
 - Every product on the shop page and product detail page has an "Add to Cart" button.
-<p float="left"><img src="readme-images/testing/add button.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/add button.png" alt="Add option" height="200px" width="400px"/></p>
 
 - The cart page displays all added products with quantities and individual prices.
-<p float="left"><img src="readme-images/testing/individual_totalprice .png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/individual_totalprice .png" alt="cart product detail" height="200px" width="400px"/></p>
 
 - The cart shows a subtotal and total price that updates when quantities change and can update item quantities.
-<p float="left"><img src="readme-images/testing/remove_product.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/remove_product.png" alt="cart total" height="200px" width="400px"/></p>
 
 - Cart contents persist in the browser session for non-logged-in users and save to their account after login.
-<p float="left"><img src="readme-images/testing/login_required.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/login_required.png" alt="save account" height="200px" width="400px"/></p>
 
 
 ---
@@ -376,11 +409,11 @@ So that my purchased items can be shipped to me.
 
 - The checkout process includes a dedicated delivery information form before payment and the form requires: full name, email address, phone number, and complete address details.
 
-<p float="left"><img src="readme-images/testing/delivery_info.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/delivery_info.png" alt="delivery info" height="200px" width="400px"/></p>
 
 - Delivery information is validated and saved to the database before payment is processed and shown in the admin dashboard.
 
-<p float="left"><img src="readme-images/testing/delivery admin.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/delivery admin.png" alt="save data" height="200px" width="400px"/></p>
 
 ---
 
@@ -399,10 +432,10 @@ So that my purchased items can be shipped to me.
 - Admin can view a complete list of all customer orders from Django Admin or a custom admin dashboard.
 - The order list displays order numbers, customer names, total amounts, and order dates.
 
-<p float="left"><img src="readme-images/testing/order_admin.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/order_admin.png" alt="admin order" height="200px" width="400px"/></p>
 
 - Admin can click into individual orders to view detailed information.
-<p float="left"><img src="readme-images/testing/order_detail.png" alt="Image of hero buttons" height="200px" width="400px"/></p>
+<p float="left"><img src="readme-images/testing/order_detail.png" alt="view order admin" height="200px" width="400px"/></p>
 
 ---
 
@@ -487,6 +520,39 @@ Fix:
 Ensured the workout variable was correctly defined in the view:
 
     workout = get_object_or_404(WorkoutPlan, id=workout_id)
+
+## Defensive Programming and Security
+
+### Security
+
+#### Environmental Variables
+
+For security reasons I have followed standard practices and used `os` to declare the environmental variables for any sensitive information.
+
+- For Development, these variables are declared in the settings section of the development environment.
+- In doing this, it means that sensitive information such as passwords and secret keys aren't put in a public place.
+- To deploy on Heroku, these environmental variables are also placed into the settings, config variables section.
+
+#### User Passwords
+
+I have used Django Allauth to handle the user's login and signup:
+- This stores the user's password as a hashed key for security
+- It also makes the users confirm their emails as an extra security step
+
+### Defensive Programming
+
+I have used code in my project to make sure actions cannot occur by placing URLs into the browser.
+
+- If, for instance, the user types in the URL to delete a post, the application has been programmed to redirect the user elsewhere and show an error message.
+- I have tested this by typing the URLs into the browser - it has worked as expected.
+
+#### Confirmation Modals
+
+I have also placed a confirmation modal to check if a user is sure they want to delete anything on the site, such as:
+- Deleting the entire wishlist
+- Deleting a stock item for the superusers
+
+This minimizes the user deleting things by mistake.
 
 ## Manual Testing
 
