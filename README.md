@@ -1,17 +1,65 @@
 # fithub
 ## Table of Contents
+## Table of Contents
 
 - [Project Goals](#project-goals)
 - [Live Project](#live-project)
 - [Screenshot](#screenshot)
 - [User Stories](#user-stories)
+  - [View Workout Details](#view-workout-details)
+  - [Access Premium Workouts](#access-premium-workouts)
+  - [Subscribe to Premium Plan](#subscribe-to-premium-plan)
+  - [Track Workout Completion](#track-workout-completion)
+  - [Login to Account](#login-to-account)
+  - [View Fitness Progress](#view-fitness-progress)
+  - [Create an Account](#create-an-account)
+  - [Contact Site Owner](#contact-site-owner)
+  - [About Page](#about-page)
+  - [Manage Fitness Profile](#manage-fitness-profile)
+  - [Manage Shop Products](#manage-shop-products)
+  - [Manage Workouts](#manage-workouts)
+  - [Browse Shop Products](#browse-shop-products)
+  - [Add Products to Cart](#add-products-to-cart)
+  - [Provide Delivery Address](#provide-delivery-address)
+  - [View Customer Orders](#view-customer-orders)
 - [Database Models and Schema](#database-models-and-schema)
+  - [Authentication & User Management](#authentication--user-management-django-allauth)
+  - [Shop Models](#shop-models)
+  - [Workout Management Models](#workout-management-models)
+  - [Payments & Premium](#payments--premium)
+  - [Contact & Communication](#contact--communication)
+- [Wireframes](#wireframes)
 - [Design](#design)
+  - [Colour Scheme](#colour-scheme)
+  - [Typography](#typography)
+  - [Images](#images)
+  - [Icons](#icons)
 - [Features](#features)
+  - [Home App](#home-app)
+  - [Workout App](#workout-app)
+  - [Progress Tracking](#progress-tracking)
+  - [Authentication System](#authentication-system-django-allauth)
+  - [Payments App](#payments-app)
+  - [Shop App](#shop-app)
+  - [Profile App](#profile-app)
+  - [Admin Management](#admin-management)
+  - [Pages App](#pages-app)
 - [Testing](#testing)
+- [Technologies Used](#technologies-used)
+  - [Languages](#languages-used)
+  - [Django Extensions](#django-and-django-extensions-used)
+  - [Frameworks, Libraries & Programs](#frameworks-libraries-and-programs)
 - [Deployment](#deployment)
+  - [GitHub Setup](#github-setup)
+  - [Heroku Deployment](#heroku-deployment)
+  - [Amazon AWS Setup](#amazon-aws-setup)
+  - [Local Setup](#local-setup)
 - [Credits](#credits)
-- [Conclusion](#conclusion)
+  - [Code](#code)
+  - [Content](#content)
+  - [Media](#media)
+  - [Acknowledgements](#acknowledgements)
+
 
  
 
@@ -327,6 +375,12 @@ As an admin, I want to see all customer orders, So that I can process and fulfil
   - Users can register with email confirmation
   - Secure session management
   - Account recovery options
+
+- Database Diagram
+
+  - The database diagram shows a list of items in each object and relationships between each object.
+
+    <div align="center"><img src="readme-images/page_images/QuickDBD-export.png" alt="image of the database diagram"></div>
 
 ## WireFrames
 
@@ -906,11 +960,93 @@ The platform uses **Font Awesome 6** icons extensively throughout the interface 
     <img src="readme-images/features/contact_page.png" alt="Contact form page" height="250px" width="450px"/>
 </p>
 ---
+
 ## Testing
 
 - #### Testing.
   - The testing section for this site is located at the following link.
     - [Testing file](TESTING.md)
+
+## Technologies used.
+
+- The application was built on the Django full-stack framework.
+- For each section of the site a Django app was created.
+- Each app then has a views.py, urls.py file to create the pages it needs.
+- Then to create the database models a models.py file is used.
+- If there are any forms needed they are then created in the forms.py file.
+- Stripe has been used for the payment function.
+- Heroku was used to deploy the application.
+- Amazon AWS was used to store. the static files and the image files.
+
+### Languages Used.
+
+- [HTML5](https://en.wikipedia.org/wiki/HTML5)
+
+  - HTML5 was used to create the content and base of each page.
+
+- [CSS3](https://en.wikipedia.org/wiki/CSS)
+
+  - CSS3 was used to then style the page and make it responsive through media queries, and interactive through using CSS transitions.
+
+- [javaScript](https://en.wikipedia.org/wiki/JavaScript)
+  - javaScript was used throughout the website to make the site interactive.
+
+- [Python](https://en.wikipedia.org/wiki/Python_(programming_language))
+  - Python was used to build the backend functionality of the web app.
+
+### Django and Django extensions used
+
+- [Django](https://www.djangoproject.com/)
+  - Django was used to create the project.
+
+- [Django Allauth](https://django-allauth.readthedocs.io/en/latest/)
+  - Django allauth was used to create the user sign-in function for the site.
+
+- [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/)
+  - Django Crispy Forms were used to utilise the bootstrap form classes.
+
+- [Django Coverage](https://pypi.org/project/django-coverage/)
+
+  - Django Coverage was used when testing to form a testing report.
+
+
+### Frameworks Libraries and Programs.
+
+- [Stripe](https://stripe.com/ie)
+
+  - CStripe has been used for the payment section of the site.
+
+- [Heroku](https://signup.heroku.com/)
+
+  - Heroku was used to deploy the website.
+
+- [Amazon AWS](https://aws.amazon.com/)
+
+  - Amazon AWS was used to store the static files and the images for the site.
+
+- [Gunicorn](https://gunicorn.org/)
+
+  - Gunicorn was used for deploying the project to Heroku.
+
+- [Google Fonts](https://fonts.google.com/)
+
+  - I imported the Mulish font from google fonts and used it consistently across the site.
+
+- [Bootstrap 5](https://getbootstrap.com/)
+
+  - Bootstrap 5 was used for its grid system and its form inputs and its helper classes.
+
+- [Quick Database Diagrams](https://www.quickdatabasediagrams.com/)
+
+  - I used quick database diagrams to make a diagram of my database schema.
+
+- [Github](https://github.com/)
+
+  - Github was used to create and store the project repository.
+
+- [Balsamiq](https://balsamiq.com/)
+
+  - Balsamiq was used to create Wireframes for the project during the initial planning stage.
 
 
 ### Deployment.
@@ -1296,3 +1432,32 @@ The platform uses **Font Awesome 6** icons extensively throughout the interface 
             ```
                 python3 manage.py runserver
             ```
+## Credits.
+
+### Code.
+
+- #### Kevin Powell Youtube video.
+    - [Fade + slide in nav list items one at a time](https://www.youtube.com/watch?v=xkKjrH3pRfg&list=WL&index=3&t=1028s)
+        - This youtube walkthrough help me to design and animate my navigation menu. I've adapted the code to suit my site.
+
+- #### Stack Overflow 
+
+    - [Sending POST data with fetch](https://stackoverflow.com/questions/6396101/pure-javascript-send-post-data-without-a-form)
+        - I used code from the above StackOverflow article to help with sending post data using fetch in javascript.
+
+    - [Messages extra tags](https://stackoverflow.com/questions/15017706/how-to-display-multiple-django-messages-in-one-page)
+        - I used the above article to help with only showing the cart items with some successful messages.
+
+
+### Content
+
+- All Text for the website was written by myself.
+
+### Media
+
+- [Grok](https://grok.com)
+    - All images for the website were obtained from Unsplash.
+
+### Acknowledgements
+
+- Code Institute for getting me to this point
