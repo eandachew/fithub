@@ -385,11 +385,11 @@ As an admin, I want to see all customer orders, So that I can process and fulfil
 ## WireFrames
 
   - Phone
-    - [Wireframes for phones.](readme-images/wireframes/)
+    - [Wireframes for phones.](readme-images/wireframes/phone.pdf)
   - Tablet
-    - [Wireframes for tablets.](readme-images/wireframes/)
+    - [Wireframes for tablets.](readme-images/wireframes/tablet.pdf)
   - Desktop
-    - [Wireframes for desktops.](readme-images/wireframes/)
+    - [Wireframes for desktops.](readme-images/wireframes/desktop.pdf)
 
 ## Database models and schema
 ### Models Overview
